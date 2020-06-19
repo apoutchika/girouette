@@ -30,16 +30,16 @@ const add = (container) => {
   domains.map((domain) => {
     cache.set(domain, ip, port)
   })
-
-  dialog.emit('domains')
 }
 
-const updateStatus = () => {
+const updateStatus = (data) => {
   docker.listContainers((err, containers) => {
     if (err) {
       return console.error(err)
     }
+    cache.clear()
     containers.map(add)
+    dialog.emit('domains')
   })
 }
 
@@ -49,7 +49,9 @@ docker.getEvents(
     if (err) {
       return console.error(err)
     }
-    data.on('data', updateStatus)
+    data.on('data', (data) => {
+      updateStatus()
+    })
   }
 )
 

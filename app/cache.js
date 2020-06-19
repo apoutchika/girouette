@@ -1,12 +1,16 @@
 'use strict'
 
-const cache = {
-  'proxy.devel': '127.0.0.1:80',
+const proxy = require('express-http-proxy')
+
+let cache = {}
+
+module.exports.clear = () => {
+  cache = {}
 }
 
 module.exports.set = (domain, ip, port) => {
   console.log(`Add ${domain} to ${ip}:${port}`)
-  cache[domain] = `${ip}:${port}`
+  cache[domain] = proxy(`${ip}:${port}`)
 }
 
 module.exports.get = (domain) => {

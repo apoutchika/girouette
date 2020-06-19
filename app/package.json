@@ -23,6 +23,7 @@
     "express-http-proxy": "^1.6.0",
     "lodash": "^4.17.15",
     "pug": "^3.0.0",
+    "selfsigned": "^1.10.7",
     "socket.io": "^2.3.0"
   }
 }
