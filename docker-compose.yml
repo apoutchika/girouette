@@ -1,0 +1,40 @@
+version: '3.7'
+
+services:
+  proxy:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    networks:
+      - proxy
+      - traefik
+    ports:
+      - 443:443
+      - 80:80
+    volumes:
+      - './app:/app'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    labels:
+      proxy_domain: proxy.devel
+      proxy_port: 8080
+      traefik.frontend.rule: 'Host:proxy.devel'
+      traefik.port: 8080
+
+  whoami:
+    image: emilevauge/whoami
+    networks:
+      - proxy
+      - traefik
+    labels:
+      proxy_domain: whoami.devel
+      proxy_port: 80
+      traefik.frontend.rule: 'Host:whoami.devel'
+      traefik.port: 80
+
+networks:
+  traefik:
+    external:
+      name: traefik
+  proxy:
+    external:
+      name: proxy
