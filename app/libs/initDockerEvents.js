@@ -18,7 +18,7 @@ const getDomains = (domains) => {
 }
 
 const getData = (container) => {
-  let domains = getDomains(get(container, ['Labels', HOSTS]))
+  const domains = getDomains(get(container, ['Labels', HOSTS]))
   const ip = get(container, IP)
   const port = get(container, ['Labels', PORT], 80)
   return { domains, ip, port }

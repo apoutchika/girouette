@@ -1,7 +1,7 @@
 'use strict'
 
-const dialog = require('./dialog')
-const cache = require('./cache')
+const dialog = require('./libs/dialog')
+const cache = require('./libs/cache')
 
 module.exports = (io) => {
   dialog.emit('io', io)

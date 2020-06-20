@@ -13,12 +13,30 @@ services:
       - 80:80
     volumes:
       - './app:/app'
+      - './data:/data'
       - '/var/run/docker.sock:/var/run/docker.sock'
     labels:
-      proxy_domain: proxy.devel
-      proxy_port: 8080
       traefik.frontend.rule: 'Host:proxy.devel'
       traefik.port: 8080
+
+  www:
+    tty: true
+    image: node:latest
+    command: sh -c "cd /app && npm run start"
+    working_dir: /app
+    volumes:
+      - './front:/app'
+    environment:
+      NODE_ENV: development
+      CHOKIDAR_USEPOLLING: 'true'
+      HOST: 0.0.0.0
+      PORT: 3000
+    networks:
+      - proxy
+      - traefik
+    labels:
+      traefik.frontend.rule: 'Host:proxydev.devel'
+      traefik.port: 3000
 
   whoami:
     image: emilevauge/whoami

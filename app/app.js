@@ -1,14 +1,20 @@
 'use strict'
 
 const app = require('express')()
-var http = require('http').createServer(app)
-var io = require('socket.io')(http)
-const cache = require('./cache')
+const http = require('http').createServer(app)
+const io = require('socket.io')(http)
+const rootCA = require('/data/rootCA.json')
 
 require('./socket')(io)
 
+app.get('/certificate', (req, res) => {
+  res.setHeader('Content-type', 'application/octet-stream')
+  res.setHeader('Content-disposition', 'attachment; filename=rootCA.crt')
+  res.send(Buffer.from(rootCA.crt))
+})
+
 app.use((req, res, next) => {
-  res.send('coucou')
+  res.redirect('https://proxydev.devel')
 })
 
 http.listen(8080, () => {
