@@ -1,6 +1,7 @@
 'use strict'
 
 const httpProxy = require('http-proxy')
+const get = require('lodash/get')
 
 let cache = {}
 
@@ -12,6 +13,14 @@ module.exports.set = (domain, port, ip, project) => {
   const proxy = new httpProxy.createProxyServer({
     ws: true,
     target: `http://${ip}:${port}`
+  })
+
+  proxy.on('error', function (err, req, res) {
+    res.writeHead(500, {
+      'Content-Type': 'text/plain'
+    })
+
+    res.end('Something went wrong.\n\n' + JSON.stringify(err, null, 2))
   })
 
   cache[domain] = {
@@ -26,6 +35,7 @@ module.exports.get = (domain) => {
 }
 
 module.exports.del = (domain) => {
+  get(cache, [domain, 'proxy', 'close'], () => true)()
   delete cache[domain]
 }
 
