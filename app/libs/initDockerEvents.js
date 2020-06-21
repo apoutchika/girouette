@@ -4,41 +4,51 @@ const docker = new Docker({ socketPath: '/var/run/docker.sock' })
 const get = require('lodash/get')
 const cache = require('./cache')
 const dialog = require('./dialog')
+const labelToHosts = require('./labelToHosts')
 
-const HOSTS = 'traefik.frontend.rule'
-const IP = 'NetworkSettings.Networks.traefik.IPAddress'
-const PORT = 'traefik.port'
-
-const getDomains = (domains) => {
-  if (!domains) {
-    return []
-  }
-
-  return domains.replace(/^Host:/, '').split(',')
-}
-
-const getData = (container) => {
-  const domains = getDomains(get(container, ['Labels', HOSTS]))
-  const ip = get(container, IP)
-  const port = get(container, ['Labels', PORT], 80)
-  return { domains, ip, port }
-}
+const actives = {}
 
 const add = (container) => {
-  const { domains, ip, port } = getData(container)
+  let ip = get(container, 'NetworkSettings.Networks.proxy.IPAddress')
+  if (!ip) {
+    ip = get(container, 'NetworkSettings.Networks.traefik.IPAddress')
+  }
 
-  domains.map((domain) => {
-    cache.set(domain, ip, port)
+  labelToHosts(get(container, 'Labels')).map(({ domain, port, project }) => {
+    cache.set(domain, port, ip, project)
+    actives[container.Id] = {
+      toDel: false,
+      domain
+    }
   })
 }
 
 const updateStatus = (data) => {
+  Object.keys(actives).map((id) => {
+    actives[id].toDel = true
+  })
+
   docker.listContainers((err, containers) => {
     if (err) {
       return console.error(err)
     }
-    cache.clear()
-    containers.map(add)
+
+    containers.map((container) => {
+      const id = container.Id
+      if (actives[id]) {
+        actives[id].toDel = false
+        return
+      }
+      add(container)
+    })
+
+    Object.keys(actives)
+      .filter((id) => actives[id].toDel)
+      .map((id) => {
+        console.log('Delete', actives[id].domain)
+        cache.del(actives[id].domain)
+      })
+
     dialog.emit('domains')
   })
 }

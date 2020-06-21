@@ -10,16 +10,18 @@ function App() {
   const [scheme, setScheme] = useState('https')
 
   useEffect(() => {
-    const socket = socketIOClient(ENDPOINT)
+    const socket = socketIOClient(ENDPOINT, {
+      path: '/proxydockerdata',
+    })
     socket.on('disconnect', () => {
       setDomains({})
     })
     socket.on('domains', (domains) => {
       //domains = domains.map(reverse).sort().map(reverse)
-      const res = domains.reduce((acc, domain) => {
-        const [tld, name] = domain.split('.').reverse()
-        acc[`${name}.${tld}`] = acc[`${name}.${tld}`] || []
-        acc[`${name}.${tld}`].push(domain)
+      const res = Object.keys(domains).reduce((acc, domain) => {
+        const { project } = domains[domain]
+        acc[project] = acc[project] || []
+        acc[project].push(domain)
         return acc
       }, {})
 
@@ -32,7 +34,7 @@ function App() {
       <h1>Proxy</h1>
 
       <div>
-        HTTPS 23
+        HTTPS
         <Switch
           onChange={() => setScheme(scheme === 'http' ? 'https' : 'http')}
           checked={scheme === 'https'}
@@ -40,28 +42,30 @@ function App() {
       </div>
 
       <ul className="cards">
-        {Object.keys(domains).map((group) => {
-          return (
-            <li className="card" key={`${group}`}>
-              <h2>{group}</h2>
-              <ul>
-                {domains[group].sort().map((domain) => {
-                  return (
-                    <li key={`${group}_${domain}`}>
-                      <a
-                        href={`${scheme}://${domain}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {scheme}://{domain}
-                      </a>
-                    </li>
-                  )
-                })}
-              </ul>
-            </li>
-          )
-        })}
+        {Object.keys(domains)
+          .sort()
+          .map((group) => {
+            return (
+              <li className="card" key={`${group}`}>
+                <h2>{group}</h2>
+                <ul>
+                  {domains[group].sort().map((domain) => {
+                    return (
+                      <li key={`${group}_${domain}`}>
+                        <a
+                          href={`${scheme}://${domain}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {scheme}://{domain}
+                        </a>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </li>
+            )
+          })}
       </ul>
 
       <a href={ENDPOINT + '/certificate'} download>

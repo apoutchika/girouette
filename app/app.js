@@ -2,8 +2,11 @@
 
 const app = require('express')()
 const http = require('http').createServer(app)
-const io = require('socket.io')(http)
 const rootCA = require('/data/rootCA.json')
+
+const io = require('socket.io')(http, {
+  path: '/proxydockerdata'
+})
 
 require('./socket')(io)
 

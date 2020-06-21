@@ -1,6 +1,6 @@
 'use strict'
 
-const proxy = require('express-http-proxy')
+const httpProxy = require('http-proxy')
 
 let cache = {}
 
@@ -8,9 +8,17 @@ module.exports.clear = () => {
   cache = {}
 }
 
-module.exports.set = (domain, ip, port) => {
-  console.log(`Add ${domain} to ${ip}:${port}`)
-  cache[domain] = proxy(`${ip}:${port}`)
+module.exports.set = (domain, port, ip, project) => {
+  const proxy = new httpProxy.createProxyServer({
+    ws: true,
+    target: `http://${ip}:${port}`
+  })
+
+  cache[domain] = {
+    project,
+    target: `http://${ip}:${port}`,
+    proxy
+  }
 }
 
 module.exports.get = (domain) => {
@@ -18,8 +26,15 @@ module.exports.get = (domain) => {
 }
 
 module.exports.del = (domain) => {
-  console.log(`Del ${domain}`)
   delete cache[domain]
 }
 
 module.exports.domains = () => Object.keys(cache)
+module.exports.all = () =>
+  Object.keys(cache).reduce((acc, key) => {
+    acc[key] = {
+      project: cache[key].project,
+      target: cache[key].target
+    }
+    return acc
+  }, {})
