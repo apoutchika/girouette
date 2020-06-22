@@ -45,7 +45,6 @@ const updateStatus = (data) => {
     Object.keys(actives)
       .filter((id) => actives[id].toDel)
       .map((id) => {
-        console.log('Delete', actives[id].domain)
         cache.del(actives[id].domain)
       })
 
