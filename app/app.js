@@ -1,10 +1,9 @@
 'use strict'
 
 const app = require('express')()
-const RSS = require('rss')
+const serveStatic = require('serve-static')
 const http = require('http').createServer(app)
 const rootCA = require('/data/rootCA.json')
-const cache = require('./libs/cache')
 
 const io = require('socket.io')(http, {
   path: '/proxydockerdata'
@@ -18,26 +17,16 @@ app.get('/certificate', (req, res) => {
   res.send(Buffer.from(rootCA.crt))
 })
 
-app.get('/rss.xml', (req, res) => {
-  const feed = new RSS({
-    title: 'Proxy',
-    feed_url: 'https://proxy.devel/rss.xml',
-    site_url: 'https://proxy.devel'
+if (process.env.NODE_ENV !== 'development') {
+  app.use('/', serveStatic('/front/build/', { index: ['index.html'] }))
+} else {
+  app.get('/', (req, res, next) => {
+    res.redirect('https://proxydev.devel')
   })
-
-  const domains = cache.all()
-  Object.keys(domains).map((domain) => {
-    feed.item({
-      title: domain,
-      url: 'https://' + domain
-    })
-  })
-
-  res.send(feed.xml())
-})
+}
 
 app.use((req, res, next) => {
-  res.redirect('https://proxydev.devel')
+  res.status(404).send('404')
 })
 
 http.listen(8080, () => {

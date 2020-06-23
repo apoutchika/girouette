@@ -68,21 +68,17 @@ docker.getEvents(
 updateStatus()
 
 dialog.on('prune', (cb) => {
-  console.log('start prune')
   docker.pruneContainers(null, (err, dataContainer) => {
     if (err) {
-      console.log('err 1')
       return cb(err)
     }
     docker.pruneImages(
       { filters: { dangling: { false: true } } },
       (err, dataImages) => {
         if (err) {
-          console.log('err 2')
           return cb(err)
         }
 
-        console.log('all ok')
         cb(null, dataContainer, dataImages)
       }
     )

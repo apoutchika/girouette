@@ -4,7 +4,7 @@ services:
   proxy:
     build:
       context: .
-      dockerfile: ./Dockerfile.devel
+      dockerfile: ./Dockerfile
     restart: always
     networks:
       - proxy
@@ -18,28 +18,7 @@ services:
       - './data:/data'
       - '/var/run/docker.sock:/var/run/docker.sock'
     labels:
-      traefik.frontend.rule: 'Host:proxy.devel'
-      traefik.port: 8080
-
-  www:
-    tty: true
-    image: node:latest
-    command: sh -c "cd /app && npm run start"
-    restart: always
-    working_dir: /app
-    volumes:
-      - './front:/app'
-    environment:
-      NODE_ENV: development
-      HOST: 0.0.0.0
-      PORT: 3000
-    networks:
-      - proxy
-      - traefik
-      - webgateway
-    labels:
-      traefik.frontend.rule: 'Host:proxydev.devel'
-      traefik.port: 3000
+      proxy.domains: proxy.devel:8080
 
   whoami:
     image: emilevauge/whoami

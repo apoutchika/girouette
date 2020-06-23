@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^7.2.0",
+    "eslint": "^7.3.1",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-node": "^11.1.0",
@@ -20,14 +20,11 @@
   "dependencies": {
     "dockerode": "^3.2.0",
     "express": "^4.17.1",
-    "express-http-proxy": "^1.6.0",
     "fs-extra": "^9.0.1",
     "http-proxy": "^1.18.1",
     "lodash": "^4.17.15",
-    "ms": "^2.1.2",
-    "pug": "^3.0.0",
-    "rss": "^1.2.2",
-    "selfsigned": "^1.10.7",
+    "node-forge": "^0.9.1",
+    "serve-static": "^1.14.1",
     "socket.io": "^2.3.0"
   }
 }
