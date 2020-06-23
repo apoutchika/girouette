@@ -36,7 +36,6 @@ function App() {
       setDomains(res)
     })
     socket.on('prune', (data) => {
-      console.log(data)
       setClean(false)
       setCleaned(data)
     })
