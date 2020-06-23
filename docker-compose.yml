@@ -9,6 +9,7 @@ services:
     networks:
       - proxy
       - traefik
+      - webgateway
     ports:
       - 443:443
       - 80:80
@@ -35,6 +36,7 @@ services:
     networks:
       - proxy
       - traefik
+      - webgateway
     labels:
       traefik.frontend.rule: 'Host:proxydev.devel'
       traefik.port: 3000
@@ -44,6 +46,7 @@ services:
     networks:
       - proxy
       - traefik
+      - webgateway
     restart: always
     labels:
       proxy_domain: whoami.devel
@@ -58,3 +61,6 @@ networks:
   proxy:
     external:
       name: proxy
+  webgateway:
+    external:
+      name: traefikforwebdev_webgateway
