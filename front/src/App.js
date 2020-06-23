@@ -2,17 +2,25 @@ import React, { useState, useEffect } from 'react'
 import socketIOClient from 'socket.io-client'
 import Switch from 'react-switch'
 import './App.css'
+import get from 'lodash/get'
+import bytes from 'bytes'
 
 const ENDPOINT = 'https://proxy.devel'
 
 function App() {
+  const [socket, setSocket] = useState()
   const [domains, setDomains] = useState([])
   const [scheme, setScheme] = useState('https')
+  const [clean, setClean] = useState(false)
+  const [cleaned, setCleaned] = useState({})
 
   useEffect(() => {
     const socket = socketIOClient(ENDPOINT, {
       path: '/proxydockerdata',
     })
+
+    setSocket(socket)
+
     socket.on('disconnect', () => {
       setDomains({})
     })
@@ -27,6 +35,11 @@ function App() {
 
       setDomains(res)
     })
+    socket.on('prune', (data) => {
+      console.log(data)
+      setClean(false)
+      setCleaned(data)
+    })
   }, [])
 
   return (
@@ -39,6 +52,35 @@ function App() {
           onChange={() => setScheme(scheme === 'http' ? 'https' : 'http')}
           checked={scheme === 'https'}
         />{' '}
+      </div>
+
+      <br />
+      <br />
+      <div>
+        {!clean && (
+          <button
+            onClick={(e) => {
+              socket.emit('prune')
+              setClean(true)
+            }}
+            type="button"
+          >
+            Clean docker
+          </button>
+        )}
+        {clean && <p>...</p>}
+        {cleaned && cleaned.containers && (
+          <ul>
+            <li>
+              Deleted containers: {get(cleaned, 'containers.nb', '?')} (
+              {bytes(get(cleaned, 'containers.go', 0))})
+            </li>
+            <li>
+              Deleted images: {get(cleaned, 'images.nb', '?')} (
+              {bytes(get(cleaned, 'images.go'))})
+            </li>
+          </ul>
+        )}
       </div>
 
       <ul className="cards">
@@ -69,7 +111,7 @@ function App() {
       </ul>
 
       <a href={ENDPOINT + '/certificate'} download>
-        Télécharger le certificat
+        Download certificate
       </a>
     </div>
   )
