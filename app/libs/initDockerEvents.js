@@ -46,6 +46,7 @@ const updateStatus = (data) => {
       .filter((id) => actives[id].toDel)
       .map((id) => {
         cache.del(actives[id].domain)
+        delete actives[id]
       })
 
     dialog.emit('domains')

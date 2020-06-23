@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    restart: always
     networks:
       - proxy
       - traefik
@@ -23,6 +24,7 @@ services:
     tty: true
     image: node:latest
     command: sh -c "cd /app && npm run start"
+    restart: always
     working_dir: /app
     volumes:
       - './front:/app'
@@ -42,6 +44,7 @@ services:
     networks:
       - proxy
       - traefik
+    restart: always
     labels:
       proxy_domain: whoami.devel
       proxy_port: 80
