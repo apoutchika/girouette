@@ -120,7 +120,10 @@ class App extends React.Component {
         </ul>
 
         <div>
-          <a href={ENDPOINT + '/certificate'} download>
+          <a
+            href={ENDPOINT.replace(/^https/, 'http') + '/certificate'}
+            download
+          >
             Download certificate
           </a>
           <ul>
