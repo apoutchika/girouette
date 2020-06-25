@@ -13,6 +13,12 @@ const add = (container) => {
   if (!ip) {
     ip = get(container, 'NetworkSettings.Networks.traefik.IPAddress')
   }
+  if (!ip) {
+    ip = get(
+      container,
+      'NetworkSettings.Networks.traefikforwebdev_webgateway.IPAddress'
+    )
+  }
 
   labelToHosts(get(container, 'Labels')).map(({ domain, port, project }) => {
     cache.set(domain, port, ip, project)
