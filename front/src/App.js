@@ -5,6 +5,9 @@ import './App.css'
 import get from 'lodash/get'
 import bytes from 'bytes'
 
+import Star from './star.svg'
+import StarBorder from './star_border.svg'
+
 const ENDPOINT = `https://proxy.devel`
 
 class App extends React.Component {
@@ -12,6 +15,7 @@ class App extends React.Component {
     super(props)
 
     this.state = {
+      favorites: [],
       socket: null,
       domains: [],
       scheme: 'https',
@@ -47,6 +51,22 @@ class App extends React.Component {
     })
   }
 
+  switchFavorite(domain) {
+    return (e) => {
+      e.preventDefault()
+
+      if (this.state.favorites.includes(domain)) {
+        return this.setState({
+          favorites: this.state.favorites.filter((fav) => fav !== domain),
+        })
+      }
+
+      this.setState({
+        favorites: [...this.state.favorites, domain],
+      })
+    }
+  }
+
   render() {
     const { socket, domains, scheme, clean, cleaned } = this.state
     return (
@@ -61,6 +81,23 @@ class App extends React.Component {
             }
             checked={scheme === 'https'}
           />{' '}
+        </div>
+
+        <br />
+        <br />
+
+        <div>
+          {this.state.favorites.map((domain) => {
+            return (
+              <a
+                href={`${scheme}://${domain}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {`${scheme}://${domain}`}
+              </a>
+            )
+          })}
         </div>
 
         <br />
@@ -109,6 +146,20 @@ class App extends React.Component {
                             rel="noopener noreferrer"
                           >
                             {scheme}://{domain}
+                          </a>
+                          <a
+                            href="#top"
+                            className="favorite-link"
+                            onClick={this.switchFavorite(domain)}
+                          >
+                            <img
+                              alt="Favorite"
+                              src={
+                                this.state.favorites.includes(domain)
+                                  ? Star
+                                  : StarBorder
+                              }
+                            />
                           </a>
                         </li>
                       )

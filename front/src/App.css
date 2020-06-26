@@ -20,9 +20,19 @@
   list-style-type: none;
 }
 
+.card ul li {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 5px;
+}
+
+.card ul li a img {
+  position: relative;
+  top: -3px;
+}
+
 .card ul li a {
   display: block;
-  margin: 5px;
   padding: 3px;
   text-decoration: none;
 }
