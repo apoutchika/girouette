@@ -15,16 +15,21 @@ class App extends React.Component {
     super(props)
 
     this.state = {
+      domainsByGroup: {},
+      domains: [],
       favorites: [],
       socket: null,
-      domains: [],
       scheme: 'https',
       clean: false,
       cleaned: {},
     }
+
+    this.saveFavories = this.saveFavories.bind(this)
   }
 
   componentDidMount() {
+    this.getFavorites()
+
     const socket = socketIOClient(ENDPOINT, {
       path: '/proxydockerdata',
     })
@@ -32,23 +37,42 @@ class App extends React.Component {
     this.setState({ socket })
 
     socket.on('disconnect', () => {
-      this.setState({ domains: {} })
+      this.setState({ domainsByGroup: {}, domains: [] })
     })
 
     socket.on('domains', (domains) => {
-      //domains = domains.map(reverse).sort().map(reverse)
-      const res = Object.keys(domains).reduce((acc, domain) => {
+      this.setState({ domains: Object.keys(domains) })
+      const domainsByGroup = Object.keys(domains).reduce((acc, domain) => {
         const { project } = domains[domain]
         acc[project] = acc[project] || []
         acc[project].push(domain)
         return acc
       }, {})
 
-      this.setState({ domains: res })
+      this.setState({ domainsByGroup })
     })
+
     socket.on('prune', (cleaned) => {
       this.setState({ clean: false, cleaned })
     })
+  }
+
+  getFavorites() {
+    try {
+      if (window.localStorage.getItem('favorites')) {
+        const favorites = JSON.parse(window.localStorage.getItem('favorites'))
+        this.setState({ favorites })
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  saveFavories() {
+    window.localStorage.setItem(
+      'favorites',
+      JSON.stringify(this.state.favorites)
+    )
   }
 
   switchFavorite(domain) {
@@ -56,19 +80,33 @@ class App extends React.Component {
       e.preventDefault()
 
       if (this.state.favorites.includes(domain)) {
-        return this.setState({
-          favorites: this.state.favorites.filter((fav) => fav !== domain),
-        })
+        return this.setState(
+          {
+            favorites: this.state.favorites.filter((fav) => fav !== domain),
+          },
+          this.saveFavories
+        )
       }
 
-      this.setState({
-        favorites: [...this.state.favorites, domain],
-      })
+      this.setState(
+        {
+          favorites: [...this.state.favorites, domain],
+        },
+        this.saveFavories
+      )
     }
   }
 
   render() {
-    const { socket, domains, scheme, clean, cleaned } = this.state
+    const {
+      socket,
+      favorites,
+      domains,
+      domainsByGroup,
+      scheme,
+      clean,
+      cleaned,
+    } = this.state
     return (
       <div className="App">
         <h1>Proxy</h1>
@@ -87,57 +125,37 @@ class App extends React.Component {
         <br />
 
         <div>
-          {this.state.favorites.map((domain) => {
-            return (
-              <a
-                href={`${scheme}://${domain}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {`${scheme}://${domain}`}
-              </a>
-            )
-          })}
+          <ul className="favorites">
+            {favorites
+              .filter((domain) => domains.includes(domain))
+              .map((domain) => {
+                return (
+                  <li key={domain}>
+                    <a
+                      href={`${scheme}://${domain}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img alt="Favorite" src={Star} />
+                      {`${scheme}://${domain}`}
+                    </a>
+                  </li>
+                )
+              })}
+          </ul>
         </div>
 
         <br />
         <br />
-        <div>
-          {!clean && (
-            <button
-              onClick={(e) => {
-                socket.emit('prune')
-                this.setState({ clean: true })
-              }}
-              type="button"
-            >
-              Clean docker
-            </button>
-          )}
-          {clean && <p>...</p>}
-          {cleaned && cleaned.containers && (
-            <ul>
-              <li>
-                Deleted containers: {get(cleaned, 'containers.nb', '?')} (
-                {bytes(get(cleaned, 'containers.go', 0))})
-              </li>
-              <li>
-                Deleted images: {get(cleaned, 'images.nb', '?')} (
-                {bytes(get(cleaned, 'images.go'))})
-              </li>
-            </ul>
-          )}
-        </div>
-
         <ul className="cards">
-          {Object.keys(domains)
+          {Object.keys(domainsByGroup)
             .sort()
             .map((group) => {
               return (
                 <li className="card" key={`${group}`}>
                   <h2>{group}</h2>
                   <ul>
-                    {domains[group].sort().map((domain) => {
+                    {domainsByGroup[group].sort().map((domain) => {
                       return (
                         <li key={`${group}_${domain}`}>
                           <a
@@ -169,6 +187,39 @@ class App extends React.Component {
               )
             })}
         </ul>
+
+        <br />
+        <br />
+
+        <div>
+          {!clean && (
+            <button
+              onClick={(e) => {
+                socket.emit('prune')
+                this.setState({ clean: true })
+              }}
+              type="button"
+            >
+              Clean docker
+            </button>
+          )}
+          {clean && <p>...</p>}
+          {cleaned && cleaned.containers && (
+            <ul>
+              <li>
+                Deleted containers: {get(cleaned, 'containers.nb', '?')} (
+                {bytes(get(cleaned, 'containers.go', 0))})
+              </li>
+              <li>
+                Deleted images: {get(cleaned, 'images.nb', '?')} (
+                {bytes(get(cleaned, 'images.go'))})
+              </li>
+            </ul>
+          )}
+        </div>
+
+        <br />
+        <br />
 
         <div>
           <a
