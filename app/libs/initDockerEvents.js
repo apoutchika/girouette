@@ -2,7 +2,7 @@ const Docker = require('dockerode')
 
 const docker = new Docker({ socketPath: '/var/run/docker.sock' })
 const get = require('lodash/get')
-const cache = require('./cache')
+const cache = require('./proxyCache')
 const dialog = require('./dialog')
 const labelToHosts = require('./labelToHosts')
 

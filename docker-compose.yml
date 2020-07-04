@@ -10,9 +10,13 @@ services:
       - proxy
       - traefik
       - webgateway
+    dns_search:
+      - 1.1.1.1
     ports:
       - 443:443
       - 80:80
+      - 53:5353
+      - 53:5353/udp
     volumes:
       - './app:/app'
       - './data:/data'
