@@ -123,3 +123,5 @@ server.on('error', function (err) {
 })
 
 server.serve(5353)
+
+module.exports.get = get

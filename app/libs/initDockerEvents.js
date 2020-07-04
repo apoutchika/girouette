@@ -1,6 +1,9 @@
 const Docker = require('dockerode')
 
-const docker = new Docker({ socketPath: '/var/run/docker.sock' })
+const Promise = require('bluebird')
+const docker = Promise.promisifyAll(
+  new Docker({ socketPath: '/var/run/docker.sock' })
+)
 const get = require('lodash/get')
 const cache = require('./proxyCache')
 const dialog = require('./dialog')
@@ -72,21 +75,28 @@ docker.getEvents(
 )
 
 updateStatus()
-
-dialog.on('prune', (cb) => {
-  docker.pruneContainers(null, (err, dataContainer) => {
+dialog.on('stop', (project) => {
+  docker.listContainers((err, containers) => {
     if (err) {
-      return cb(err)
+      console.error(err)
     }
-    docker.pruneImages(
-      { filters: { dangling: { false: true } } },
-      (err, dataImages) => {
-        if (err) {
-          return cb(err)
-        }
-
-        cb(null, dataContainer, dataImages)
+    containers.map((container) => {
+      if (
+        get(container, ['Labels', 'com.docker.compose.project']) === project
+      ) {
+        docker.getContainer(container.Id).stop()
       }
-    )
+    })
   })
+})
+
+dialog.on('prune', async (cb) => {
+  Promise.props({
+    containers: docker.pruneContainersAsync(null),
+    images: docker.pruneImagesAsync({ filters: { dangling: { false: true } } })
+  })
+    .then(({ containers, images }) => {
+      cb(null, containers, images)
+    })
+    .catch(cb)
 })

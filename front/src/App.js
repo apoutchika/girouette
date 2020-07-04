@@ -2,11 +2,11 @@ import React from 'react'
 import socketIOClient from 'socket.io-client'
 import Switch from 'react-switch'
 import './App.css'
-import get from 'lodash/get'
-import bytes from 'bytes'
 
-import Star from './star.svg'
-import StarBorder from './star_border.svg'
+import Project from './Components/Project'
+import Favorites from './Components/Favorites'
+import CleanDocker from './Components/CleanDocker'
+import CleanDns from './Components/CleanDns'
 
 const ENDPOINT = `https://proxy.devel`
 
@@ -20,11 +20,10 @@ class App extends React.Component {
       favorites: [],
       socket: null,
       scheme: 'https',
-      clean: false,
-      cleaned: {},
     }
 
-    this.saveFavories = this.saveFavories.bind(this)
+    this.saveFavorites = this.saveFavorites.bind(this)
+    this.switchFavorite = this.switchFavorite.bind(this)
   }
 
   componentDidMount() {
@@ -51,10 +50,6 @@ class App extends React.Component {
 
       this.setState({ domainsByGroup })
     })
-
-    socket.on('prune', (cleaned) => {
-      this.setState({ clean: false, cleaned })
-    })
   }
 
   getFavorites() {
@@ -68,7 +63,7 @@ class App extends React.Component {
     }
   }
 
-  saveFavories() {
+  saveFavorites() {
     window.localStorage.setItem(
       'favorites',
       JSON.stringify(this.state.favorites)
@@ -84,7 +79,7 @@ class App extends React.Component {
           {
             favorites: this.state.favorites.filter((fav) => fav !== domain),
           },
-          this.saveFavories
+          this.saveFavorites
         )
       }
 
@@ -92,21 +87,13 @@ class App extends React.Component {
         {
           favorites: [...this.state.favorites, domain],
         },
-        this.saveFavories
+        this.saveFavorites
       )
     }
   }
 
   render() {
-    const {
-      socket,
-      favorites,
-      domains,
-      domainsByGroup,
-      scheme,
-      clean,
-      cleaned,
-    } = this.state
+    const { domains, domainsByGroup, favorites, scheme, socket } = this.state
     return (
       <div className="App">
         <h1>Proxy</h1>
@@ -121,105 +108,28 @@ class App extends React.Component {
           />{' '}
         </div>
 
-        <br />
-        <br />
+        <Favorites favorites={favorites} domains={domains} scheme={scheme} />
 
-        <div>
-          <ul className="favorites">
-            {favorites
-              .filter((domain) => domains.includes(domain))
-              .map((domain) => {
-                return (
-                  <li key={domain}>
-                    <a
-                      href={`${scheme}://${domain}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <img alt="Favorite" src={Star} />
-                      {`${scheme}://${domain}`}
-                    </a>
-                  </li>
-                )
-              })}
-          </ul>
-        </div>
-
-        <br />
-        <br />
         <ul className="cards">
           {Object.keys(domainsByGroup)
             .sort()
             .map((group) => {
               return (
-                <li className="card" key={`${group}`}>
-                  <h2>{group}</h2>
-                  <ul>
-                    {domainsByGroup[group].sort().map((domain) => {
-                      return (
-                        <li key={`${group}_${domain}`}>
-                          <a
-                            href={`${scheme}://${domain}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {scheme}://{domain}
-                          </a>
-                          <a
-                            href="#top"
-                            className="favorite-link"
-                            onClick={this.switchFavorite(domain)}
-                          >
-                            <img
-                              alt="Favorite"
-                              src={
-                                this.state.favorites.includes(domain)
-                                  ? Star
-                                  : StarBorder
-                              }
-                            />
-                          </a>
-                        </li>
-                      )
-                    })}
-                  </ul>
-                </li>
+                <Project
+                  key={group}
+                  group={group}
+                  socket={socket}
+                  domains={domainsByGroup[group].sort()}
+                  scheme={scheme}
+                  favorites={favorites}
+                  switchFavorite={this.switchFavorite}
+                />
               )
             })}
         </ul>
 
-        <br />
-        <br />
-
-        <div>
-          {!clean && (
-            <button
-              onClick={(e) => {
-                socket.emit('prune')
-                this.setState({ clean: true })
-              }}
-              type="button"
-            >
-              Clean docker
-            </button>
-          )}
-          {clean && <p>...</p>}
-          {cleaned && cleaned.containers && (
-            <ul>
-              <li>
-                Deleted containers: {get(cleaned, 'containers.nb', '?')} (
-                {bytes(get(cleaned, 'containers.go', 0))})
-              </li>
-              <li>
-                Deleted images: {get(cleaned, 'images.nb', '?')} (
-                {bytes(get(cleaned, 'images.go'))})
-              </li>
-            </ul>
-          )}
-        </div>
-
-        <br />
-        <br />
+        <CleanDocker socket={socket} />
+        <CleanDns socket={socket} />
 
         <div>
           <a
