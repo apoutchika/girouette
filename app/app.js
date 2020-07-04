@@ -6,7 +6,7 @@ const http = require('http').createServer(app)
 const rootCA = require('/data/rootCA.json')
 
 const io = require('socket.io')(http, {
-  path: '/proxydockerdata'
+  path: '/girouettedockerdata'
 })
 
 require('./socket')(io)
@@ -21,7 +21,7 @@ if (process.env.NODE_ENV !== 'development') {
   app.use('/', serveStatic('/front/build/', { index: ['index.html'] }))
 } else {
   app.get('/', (req, res, next) => {
-    res.redirect('https://proxydev.devel')
+    res.redirect('https://girouettedev.devel')
   })
 }
 

@@ -8,7 +8,7 @@ import Favorites from './Components/Favorites'
 import CleanDocker from './Components/CleanDocker'
 import CleanDns from './Components/CleanDns'
 
-const ENDPOINT = `https://proxy.devel`
+const ENDPOINT = `https://girouette.devel`
 
 class App extends React.Component {
   constructor(props) {
@@ -30,7 +30,7 @@ class App extends React.Component {
     this.getFavorites()
 
     const socket = socketIOClient(ENDPOINT, {
-      path: '/proxydockerdata',
+      path: '/girouettedockerdata',
     })
 
     this.setState({ socket })
@@ -96,7 +96,7 @@ class App extends React.Component {
     const { domains, domainsByGroup, favorites, scheme, socket } = this.state
     return (
       <div className="App">
-        <h1>Proxy</h1>
+        <h1>Girouette</h1>
 
         <div>
           HTTPS

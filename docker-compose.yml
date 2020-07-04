@@ -1,13 +1,13 @@
 version: '3.7'
 
 services:
-  proxy:
+  girouette:
     build:
       context: .
       dockerfile: ./Dockerfile.devel
     restart: always
     networks:
-      - proxy
+      - girouette
       - traefik
       - webgateway
     dns_search:
@@ -22,7 +22,7 @@ services:
       - './data:/data'
       - '/var/run/docker.sock:/var/run/docker.sock'
     labels:
-      traefik.frontend.rule: 'Host:proxy.devel'
+      traefik.frontend.rule: 'Host:girouette.devel'
       traefik.port: 8080
 
   www:
@@ -38,23 +38,23 @@ services:
       HOST: 0.0.0.0
       PORT: 3000
     networks:
-      - proxy
+      - girouette
       - traefik
       - webgateway
     labels:
-      traefik.frontend.rule: 'Host:proxydev.devel'
+      traefik.frontend.rule: 'Host:girouettedev.devel'
       traefik.port: 3000
 
   whoami:
     image: emilevauge/whoami
     networks:
-      - proxy
+      - girouette
       - traefik
       - webgateway
     restart: always
     labels:
-      proxy_domain: whoami.devel
-      proxy_port: 80
+      girouette_domain: whoami.devel
+      girouette_port: 80
       traefik.frontend.rule: 'Host:whoami.devel'
       traefik.port: 80
 
@@ -62,9 +62,9 @@ networks:
   traefik:
     external:
       name: traefik
-  proxy:
+  girouette:
     external:
-      name: proxy
+      name: girouette
   webgateway:
     external:
       name: traefikforwebdev_webgateway

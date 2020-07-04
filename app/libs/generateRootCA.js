@@ -20,8 +20,8 @@ module.exports = () => {
   cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 10)
 
   const attrs = [
-    { name: 'organizationName', value: '00 Super Proxy Root' },
-    { name: 'commonName', value: 'superproxy.com' }
+    { name: 'organizationName', value: '00 Girouette' },
+    { name: 'commonName', value: 'girouette.devel' }
   ]
 
   cert.setSubject(attrs)
@@ -44,7 +44,7 @@ module.exports = () => {
       altNames: [
         {
           type: 2,
-          value: 'superproxy.com'
+          value: 'girouette.devel'
         }
       ]
     }

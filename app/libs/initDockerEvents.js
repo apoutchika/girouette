@@ -12,7 +12,7 @@ const labelToHosts = require('./labelToHosts')
 const actives = {}
 
 const add = (container) => {
-  let ip = get(container, 'NetworkSettings.Networks.proxy.IPAddress')
+  let ip = get(container, 'NetworkSettings.Networks.girouette.IPAddress')
   if (!ip) {
     ip = get(container, 'NetworkSettings.Networks.traefik.IPAddress')
   }

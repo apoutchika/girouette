@@ -5,5 +5,5 @@ COPY ./app /app
 RUN npm i -g nodemon
 WORKDIR /app
 
-EXPOSE 80 8080 443
+EXPOSE 80 8080 443 5353
 CMD nodemon index.js

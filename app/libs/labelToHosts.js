@@ -13,8 +13,8 @@ const getProject = (labels, domain) => {
 }
 
 module.exports = (labels) => {
-  if (labels['proxy.domains']) {
-    return labels['proxy.domains'].split(',').map((domainAndPort) => {
+  if (labels['girouette.domains']) {
+    return labels['girouette.domains'].split(',').map((domainAndPort) => {
       const [domain, port] = domainAndPort.split(':')
       return {
         project: getProject(labels, domain),
