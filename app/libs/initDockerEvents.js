@@ -10,17 +10,24 @@ const dialog = require('./dialog')
 const labelToHosts = require('./labelToHosts')
 
 const actives = {}
+const networks = new Map()
 
 const add = (container) => {
-  let ip = get(container, 'NetworkSettings.Networks.girouette.IPAddress')
-  if (!ip) {
-    ip = get(container, 'NetworkSettings.Networks.traefik.IPAddress')
+  // Not in external network
+  if (Object.keys(get(container, 'NetworkSettings.Networks', [])) === 0) {
+    return
   }
-  if (!ip) {
-    ip = get(
-      container,
-      'NetworkSettings.Networks.traefikforwebdev_webgateway.IPAddress'
-    )
+
+  const network = Object.keys(container.NetworkSettings.Networks)[0]
+  const id = get(container, `NetworkSettings.Networks.${network}.NetworkID`)
+  const ip = get(container, `NetworkSettings.Networks.${network}.IPAddress`)
+  if (!networks.has(network)) {
+    networks.set(network, id) // Add network to girouette
+    docker.getNetwork(id).connect({ Container: 'girouette' }, (err, ok) => {
+      if (err) {
+        console.error(err)
+      }
+    })
   }
 
   labelToHosts(get(container, 'Labels')).map(({ domain, port, project }) => {
@@ -43,6 +50,19 @@ const updateStatus = (data) => {
     }
 
     containers.map((container) => {
+      // Add networks if is girouette container
+      if (container.Names[0] === '/girouette') {
+        Object.keys(get(container, 'NetworkSettings.Networks', [])).map(
+          (network) => {
+            const id = get(
+              container,
+              `NetworkSettings.Networks.${network}.NetworkID`
+            )
+            networks.set(network, id)
+          }
+        )
+      }
+
       const id = container.Id
       if (actives[id]) {
         actives[id].toDel = false

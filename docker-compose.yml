@@ -2,14 +2,11 @@ version: '3.7'
 
 services:
   girouette:
+    container_name: girouette
     build:
       context: .
       dockerfile: ./Dockerfile.devel
     restart: always
-    networks:
-      - girouette
-      - traefik
-      - webgateway
     dns_search:
       - 1.1.1.1
     ports:
@@ -53,10 +50,7 @@ services:
       - webgateway
     restart: always
     labels:
-      girouette_domain: whoami.devel
-      girouette_port: 80
-      traefik.frontend.rule: 'Host:whoami.devel'
-      traefik.port: 80
+      girouette_domain: whoami.devel:80
 
 networks:
   traefik:
