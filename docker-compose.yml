@@ -46,11 +46,9 @@ services:
     image: emilevauge/whoami
     networks:
       - girouette
-      - traefik
-      - webgateway
     restart: always
     labels:
-      girouette_domain: whoami.devel:80
+      girouette.domains: whoami.devel:80
 
 networks:
   traefik:

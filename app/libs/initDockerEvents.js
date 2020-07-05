@@ -12,7 +12,8 @@ const labelToHosts = require('./labelToHosts')
 const actives = {}
 const networks = new Map()
 
-const add = (container) => {
+const add = async (container) => {
+  // console.log(JSON.stringify(container, null, 2))
   // Not in external network
   if (Object.keys(get(container, 'NetworkSettings.Networks', [])) === 0) {
     return
@@ -23,10 +24,14 @@ const add = (container) => {
   const ip = get(container, `NetworkSettings.Networks.${network}.IPAddress`)
   if (!networks.has(network)) {
     networks.set(network, id) // Add network to girouette
-    docker.getNetwork(id).connect({ Container: 'girouette' }, (err, ok) => {
-      if (err) {
-        console.error(err)
-      }
+    await new Promise((resolve, reject) => {
+      docker.getNetwork(id).connect({ Container: 'girouette' }, (err, ok) => {
+        if (err) {
+          reject(err)
+        }
+
+        resolve(ok)
+      })
     })
   }
 
@@ -50,19 +55,6 @@ const updateStatus = (data) => {
     }
 
     containers.map((container) => {
-      // Add networks if is girouette container
-      if (container.Names[0] === '/girouette') {
-        Object.keys(get(container, 'NetworkSettings.Networks', [])).map(
-          (network) => {
-            const id = get(
-              container,
-              `NetworkSettings.Networks.${network}.NetworkID`
-            )
-            networks.set(network, id)
-          }
-        )
-      }
-
       const id = container.Id
       if (actives[id]) {
         actives[id].toDel = false
@@ -82,6 +74,29 @@ const updateStatus = (data) => {
   })
 }
 
+// Find Girouette container and add used networks, and run updateStatus
+docker.listContainers((err, containers) => {
+  if (err) {
+    return console.error(err)
+  }
+
+  containers.map((container) => {
+    if (container.Names[0] === '/girouette') {
+      return Object.keys(get(container, 'NetworkSettings.Networks', [])).map(
+        (network) => {
+          const id = get(
+            container,
+            `NetworkSettings.Networks.${network}.NetworkID`
+          )
+          networks.set(network, id)
+        }
+      )
+    }
+  })
+
+  updateStatus()
+})
+
 docker.getEvents(
   { filters: { type: ['container'], event: ['start', 'stop'] } },
   (err, data) => {
@@ -94,7 +109,6 @@ docker.getEvents(
   }
 )
 
-updateStatus()
 dialog.on('stop', (project) => {
   docker.listContainers((err, containers) => {
     if (err) {
