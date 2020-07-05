@@ -7,8 +7,14 @@ const mem = require('mem')
 const resolveDNS = Promise.promisify(dns.resolve)
 const cache = require('./libs/dnsCache')
 const isDomain = require('is-valid-domain')
+const get = require('lodash/get')
 
 const server = DNS.createServer()
+
+const localTlds = get(process, 'env.TLDS', '')
+  .split(',')
+  .filter(Boolean)
+  .map((tld) => new RegExp(tld + '$'))
 
 const types = DNS.consts.QTYPE_TO_NAME
 const typeToAnswer = {
@@ -33,7 +39,7 @@ const typeToAnswer = {
   CNAME: (data) => ({ data })
 }
 
-const Get = (question) => {
+const GetAnswer = (question) => {
   const key = `${question.type}_${question.name}`
   let resolved = false
 
@@ -49,7 +55,7 @@ const Get = (question) => {
       return resolve([])
     }
 
-    if (question.name.match(/\.devel$/)) {
+    if (localTlds.find((tld) => question.name.match(tld))) {
       cache.set(key, [
         {
           ...question,
@@ -99,7 +105,7 @@ const Get = (question) => {
   })
 }
 
-const get = mem(Get, {
+const getAnswer = mem(GetAnswer, {
   cacheKey: ([{ type, name }]) => {
     return `${type}_${name}`
   },
@@ -108,7 +114,7 @@ const get = mem(Get, {
 
 server.on('request', (request, response) => {
   Promise.map(request.question, (question) => {
-    return get(question).then((answers) => {
+    return getAnswer(question).then((answers) => {
       answers.map((answer) => response.answer.push(answer))
     })
   })
@@ -124,4 +130,4 @@ server.on('error', function (err) {
 
 server.serve(5353)
 
-module.exports.get = get
+module.exports.getAnswer = getAnswer
