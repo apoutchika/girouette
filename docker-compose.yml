@@ -22,8 +22,7 @@ services:
       - './data:/data'
       - '/var/run/docker.sock:/var/run/docker.sock'
     labels:
-      traefik.frontend.rule: 'Host:girouette.devel'
-      traefik.port: 8080
+      girouette.domains: girouette.devel:8080
 
   www:
     tty: true

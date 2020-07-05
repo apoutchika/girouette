@@ -6,13 +6,16 @@ services:
       context: .
       dockerfile: ./Dockerfile
     restart: always
-    networks:
-      - girouette
-      - traefik
-      - webgateway
+    dns_search:
+      - 1.1.1.1
     ports:
       - 443:443
       - 80:80
+      - 53:5353
+      - 53:5353/udp
+    environment:
+      NODE_ENV: production
+      TLDS: '.devel'
     volumes:
       - './app:/app'
       - './data:/data'
@@ -24,22 +27,11 @@ services:
     image: emilevauge/whoami
     networks:
       - girouette
-      - traefik
-      - webgateway
     restart: always
     labels:
-      girouette_domain: whoami.devel
-      girouette_port: 80
-      traefik.frontend.rule: 'Host:whoami.devel'
-      traefik.port: 80
+      girouette.domains: whoami.devel:80
 
 networks:
-  traefik:
-    external:
-      name: traefik
   girouette:
     external:
       name: girouette
-  webgateway:
-    external:
-      name: traefikforwebdev_webgateway
