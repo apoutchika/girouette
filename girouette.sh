@@ -28,14 +28,17 @@ CONFIGURE=$(cat <<EOF
 const fs = require('fs')
 const inquirer = require('inquirer')
 
+console.log('') // space
+console.log('') // space
 inquirer.prompt([
 {
   type: 'input',
   name: 'tlds',
-  message: 'Domain extensions to redirect in localhost (commat separed) : ',
+  message: 'Domain extensions for redirect to Girouette (commat separed) : ',
   default: () => '.devel,.local'
 }
 ]).then(answers => {
+  console.log('') // space
   const tlds = answers.tlds
                       .split(',')
                       .map(tld => tld.replace(/^\\\\./, ''))
