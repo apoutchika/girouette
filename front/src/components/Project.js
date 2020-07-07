@@ -28,13 +28,17 @@ class Project extends React.Component {
       <li className="card" key={`${group}`}>
         <div className="card--title">
           <h2>{group}</h2>
-          {!this.state.off && (
-            <a href="#top" onClick={this.off}>
-              <img width="30" src={Off} alt="Stop" />
-            </a>
-          )}
-          {this.state.off && (
-            <img className="turn" width="30" src={Wait} alt="Stop" />
+          {group !== 'Girouette' && (
+            <>
+              {!this.state.off && (
+                <a href="#top" onClick={this.off}>
+                  <img width="30" src={Off} alt="Stop" />
+                </a>
+              )}
+              {this.state.off && (
+                <img className="turn" width="30" src={Wait} alt="Stop" />
+              )}
+            </>
           )}
         </div>
         <ul>
