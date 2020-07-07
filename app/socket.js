@@ -4,7 +4,7 @@ const dialog = require('./libs/dialog')
 const proxyCache = require('./libs/proxyCache')
 const dnsCache = require('./libs/dnsCache')
 const mem = require('mem')
-const { get } = require('./dns')
+const { getAnswer } = require('./dns')
 
 module.exports = (io) => {
   dialog.emit('io', io)
@@ -12,7 +12,7 @@ module.exports = (io) => {
     socket.emit('domains', proxyCache.all())
 
     socket.on('dns', () => {
-      mem.clear(get)
+      mem.clear(getAnswer)
       dnsCache.clear()
       socket.emit('dns', true)
     })
