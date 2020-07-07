@@ -1,0 +1,232 @@
+// -------------------------------------
+// Display
+// -------------------------------------
+.block {
+  display: block;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.flex {
+  display: flex;
+}
+
+.inline-flex {
+  display: inline-flex;
+}
+
+.hidden {
+  display: none;
+}
+
+// -------------------------------------
+// Flex direction
+// -------------------------------------
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+// -------------------------------------
+// Flex wrap
+// -------------------------------------
+.flex-no-wrap {
+  flex-wrap: nowrap;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+// -------------------------------------
+// Align items
+// -------------------------------------
+.items-start {
+  align-items: flex-start;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+// -------------------------------------
+// Justify content
+// -------------------------------------
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+// -------------------------------------
+// Flex
+// -------------------------------------
+.flex-1 {
+  flex: 1;
+}
+
+.flex-10 {
+  flex: 0 1 10%;
+}
+
+.flex-20 {
+  flex: 0 1 20%;
+}
+
+.flex-30 {
+  flex: 0 1 30%;
+}
+
+.flex-40 {
+  flex: 0 1 40%;
+}
+
+.flex-50 {
+  flex: 0 1 50%;
+}
+
+.flex-60 {
+  flex: 0 1 60%;
+}
+
+.flex-70 {
+  flex: 0 1 70%;
+}
+
+.flex-80 {
+  flex: 0 1 80%;
+}
+
+.flex-90 {
+  flex: 0 1 90%;
+}
+
+.flex-100 {
+  flex: 1 1 100%;
+}
+
+// -------------------------------------
+// Flex grow
+// -------------------------------------
+.flex-grow {
+  flex-grow: 1;
+}
+
+.flex-no-grow {
+  flex-grow: 0;
+}
+
+// -------------------------------------
+// Flex shrink
+// -------------------------------------
+.flex-shrink {
+  flex-shrink: 1;
+}
+
+.flex-no-shrink {
+  flex-shrink: 0;
+}
+
+// -------------------------------------
+// Overflow
+// -------------------------------------
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-x-scroll {
+  overflow-x: scroll;
+}
+
+.overflow-y-scroll {
+  overflow-y: scroll;
+}
+
+// -------------------------------------
+// Position
+// -------------------------------------
+.fixed {
+  position: fixed;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+  }
+
+.sticky {
+  position: sticky;
+}
+
+// -------------------------------------
+// Text align
+// -------------------------------------
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  width: 100%;
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+// -------------------------------------
+// Text transform
+// -------------------------------------
+.uppercase {
+  text-transform: uppercase;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.normal-case {
+  text-transform: none;
+}
+
+// -------------------------------------
+// Background
+// -------------------------------------
+.bg-cover {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+// -------------------------------------
+// Pointer events
+// -------------------------------------
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.pointer-events-auto {
+  pointer-events: auto;
+}

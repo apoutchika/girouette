@@ -1,0 +1,22 @@
+.btn {
+	position: relative;
+	height: 38px;
+	padding: 0 15px;
+	border-radius: .25rem;
+	font-weight: 700;
+	font-size: 1.4rem;
+	color: $white;
+	transition: background-color .2s;
+
+	&--rich {
+		background-color: $rich;
+	}
+
+	&:hover {
+		background-color: $prussian;
+	}
+
+	&:active {
+		top: 1px;
+	}
+}

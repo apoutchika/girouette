@@ -1,0 +1,18 @@
+.header {
+	display: flex;
+	align-items: center;
+	height: 64px;
+	padding: 0 15px 0 30px;
+	margin-bottom: 30px;
+	background-color: $carolina;
+	color: $white;
+	box-shadow: 0 .5rem 1rem rgba(0,0,0,.05),inset 0 -1px 0 rgba(0,0,0,.1);
+
+	&__logo {
+		margin-right: 100px;
+	}
+
+	&__docker {
+		margin-left: auto;
+	}
+}
