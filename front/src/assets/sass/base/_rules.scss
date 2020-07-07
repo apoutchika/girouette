@@ -1,0 +1,82 @@
+::selection {
+  background: $black;
+  color: $white;
+}
+
+body {
+  background-color: $athens;
+  font-size: 1.7rem;
+
+  &.noscroll {
+    overflow: hidden;
+  }
+}
+
+// Layout
+.wrapper,
+.wrapper-small {
+  width: 100%;
+  margin: 0 auto;
+
+  @include breakpoint(medium) {
+    padding: 0 20px;
+  }
+}
+
+.wrapper {
+  max-width: $wrapper;
+
+  @include breakpoint(large) {
+    max-width: $wrapper-large;
+  }
+}
+
+.wrapper-small {
+  max-width: $wrapper-small;
+}
+
+
+// Julien
+
+.favorites {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.favorites li {
+  margin: 0;
+  padding: 0;
+}
+
+.favorites li a {
+  display: block;
+  padding: 5px;
+  margin: 10px;
+  border: 1px solid lime;
+  text-decoration: none;
+  line-height: 30px;
+}
+
+.favorites li a img {
+  position: relative;
+  margin: 0 5px 0 0;
+  padding: 0;
+  top: 4px;
+}
+
+.favorites li a:hover {
+  text-decoration: underline;
+}
+
+.cards {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}

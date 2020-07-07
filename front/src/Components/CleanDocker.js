@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import get from 'lodash/get'
 import bytes from 'bytes'
-
-import Wait from '../wait.svg'
+import SVG from './SVG'
 
 class CleanDocker extends React.Component {
   constructor(props) {
@@ -42,19 +41,19 @@ class CleanDocker extends React.Component {
     const { socket } = this.props
     const { clean, cleaned } = this.state
     return (
-      <div>
-        {!clean && (
-          <button
-            onClick={(e) => {
-              socket.emit('prune')
-              this.setState({ clean: true })
-            }}
-            type="button"
-          >
-            Clean docker
-          </button>
-        )}
-        {clean && <img className="turn" width="30" src={Wait} alt="Clean" />}
+      <Fragment>
+        <button
+          onClick={(e) => {
+            socket.emit('prune')
+            this.setState({ clean: true })
+          }}
+          className={`header__docker btn btn--rich ${clean && 'loading'}`}
+          type="button"
+        >
+          <SVG icon="docker" />
+          Clean docker
+        </button>
+
         {cleaned && cleaned.containers && (
           <ul>
             <li>
@@ -67,7 +66,7 @@ class CleanDocker extends React.Component {
             </li>
           </ul>
         )}
-      </div>
+      </Fragment>
     )
   }
 }

@@ -1,0 +1,91 @@
+.btn {
+	display: inline-flex;
+	position: relative;
+	align-items: center;
+	height: 38px;
+	padding: 0 15px;
+	border-radius: .25rem;
+	font-weight: 700;
+	font-size: 1.4rem;
+	color: $white;
+	transition: background-color .25s, color .25s;
+	box-shadow: 0 3px 6px rgba(11, 33, 74, .09),0 -2px 2px rgba(11, 33, 74, .03);
+
+	svg {
+		width: 20px;
+		height: 20px;
+		margin-right: 6px;
+		transition: fill .25s;
+		fill: $white;
+
+		&.small-icon {
+			width: 16px;
+			height: 16px;
+		}
+	}
+
+	&.loading {
+		pointer-events: none;
+
+		&::before {
+			content: '';
+			position: absolute;
+			z-index: 1;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			border-radius: .25rem;
+			opacity: .8;
+		}
+
+		&::after {
+			content: '';
+			position: absolute;
+			z-index: 2;
+			top: 50%;
+			left: 50%;
+			width: 25px;
+			height: 25px;
+			border-radius: 50%;
+			border-top: 3px solid $white;
+			animation: loader .8s infinite ease-in-out;
+		}
+	}
+
+	&:hover {
+		background-color: $prussian;
+	}
+
+	&--reverse {
+		border: 2px solid $white;
+		color: $white;
+
+		svg {
+			fill: $white;
+		}
+
+		&:hover {
+			background-color: $white;
+			color: $carolina;
+
+			svg {
+				fill: $carolina;
+			}
+		}
+	}
+
+	&--rich {
+		background-color: $rich;
+
+		&::before {
+			background-color: $rich;
+		}
+	}
+
+
+
+	&:active {
+		top: 1px;
+	}
+}

@@ -2,8 +2,8 @@ import React from 'react'
 
 import Off from '../off.svg'
 import Wait from '../wait.svg'
-import Star from '../star.svg'
-import StarBorder from '../star_border.svg'
+import Star from '../assets/svgs/star.svg'
+import StarBorder from '../assets/svgs/star_border.svg'
 
 class Project extends React.Component {
   constructor(props) {

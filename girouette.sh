@@ -36,13 +36,21 @@ inquirer.prompt([
   name: 'tlds',
   message: 'Domain extensions for redirect to Girouette (commat separed) : ',
   default: () => '.devel,.local'
+},
+{
+  type: 'input',
+  name: 'dns',
+  message: 'Choose your preferred dns server (commat separed) : ',
+  default: () => '1.1.1.1'
 }
 ]).then(answers => {
   console.log('') // space
-  const tlds = answers.tlds
-                      .split(',')
-                      .map(tld => tld.replace(/^\\\\./, ''))
-  fs.writeFileSync('/app/tlds', tlds.join(',') + \"\\\\n\" + tlds[0])
+
+  answers.tlds = answers.tlds.split(',').map(tld => tld.replace(/^\\\\./, '')).join(',')
+
+  fs.writeFileSync('/app/tld', answers.tlds.split(',')[0])
+  fs.writeFileSync('/app/tlds', answers.tlds)
+  fs.writeFileSync('/app/dns', answers.dns)
 })
 EOF
 )
@@ -50,14 +58,16 @@ EOF
 run_node "cd /app && npm install inquirer && node -e \"${CONFIGURE}\""
 
 
-TLDS=$(run_node "cat /app/tlds" | head -1)
-TLD=$(run_node "cat /app/tlds" | tail -1)
+TLDS=$(run_node "cat /app/tlds")
+TLD=$(run_node "cat /app/tld")
+DNS=$(run_node "cat /app/dns")
+
 docker volume rm girouette_install
 
 docker run \
   --restart="always" \
   --name girouette \
-  --dns=1.1.1.1 \
+  --dns=${DNS} \
   -d \
   -p 80:80 \
   -p 443:443 \
@@ -68,7 +78,7 @@ docker run \
   -v "girouette:/data" \
   -v "/var/run/docker.sock:/var/run/docker.sock" \
   --label girouette.domains="girouette.${TLD}:8080" \
-  apoutchika/proxy
+  apoutchika/girouette
 
 echo "####################################################################"
 echo "##                                                                ##"
