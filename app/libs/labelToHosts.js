@@ -9,7 +9,11 @@ const getProject = (labels, domain) => {
     .slice(0, 2)
     .reverse()
     .join('.')
-  return get(labels, ['com.docker.compose.project'], defaultProject)
+  return get(
+    labels,
+    ['girouette.group'],
+    get(labels, ['com.docker.compose.project'], defaultProject)
+  )
 }
 
 module.exports = (labels) => {

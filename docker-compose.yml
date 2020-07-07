@@ -2,10 +2,10 @@ version: '3.7'
 
 services:
   girouette:
-    container_name: girouette
     build:
       context: .
       dockerfile: ./Dockerfile.devel
+    container_name: girouette
     restart: always
     dns_search:
       - 1.1.1.1
@@ -23,6 +23,7 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock'
     labels:
       girouette.domains: girouette.devel:8080
+      girouette.group: Girouette
 
   www:
     tty: true
@@ -43,6 +44,7 @@ services:
     labels:
       traefik.frontend.rule: 'Host:girouettedev.devel'
       traefik.port: 3000
+      girouette.group: Girouette
 
   whoami:
     image: emilevauge/whoami
@@ -51,6 +53,7 @@ services:
     restart: always
     labels:
       girouette.domains: whoami.devel:80
+      girouette.group: Girouette
 
 networks:
   traefik:
