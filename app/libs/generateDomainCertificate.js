@@ -20,8 +20,8 @@ module.exports = (domain) => {
   ])
   site.setSubject([{ name: 'commonName', value: domain }])
   site.setIssuer([
-    { name: 'organizationName', value: '00 Super Proxy Root' },
-    { name: 'commonName', value: 'superproxy.com' }
+    { name: 'organizationName', value: '00 Girouette' },
+    { name: 'commonName', value: 'girouette.devel' }
   ])
 
   site.sign(privateKey, forge.md.sha256.create())

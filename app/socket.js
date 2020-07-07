@@ -1,12 +1,27 @@
 'use strict'
 
 const dialog = require('./libs/dialog')
-const cache = require('./libs/cache')
+const proxyCache = require('./libs/proxyCache')
+const dnsCache = require('./libs/dnsCache')
+const mem = require('mem')
+const { get } = require('./dns')
 
 module.exports = (io) => {
   dialog.emit('io', io)
   io.on('connection', (socket) => {
-    socket.emit('domains', cache.all())
+    socket.emit('domains', proxyCache.all())
+
+    socket.on('dns', () => {
+      mem.clear(get)
+      dnsCache.clear()
+      socket.emit('dns', true)
+    })
+
+    socket.on('stop', (domain) => {
+      dialog.emit('stop', domain)
+      console.log('stop', domain)
+    })
+
     socket.on('prune', () => {
       dialog.emit('prune', (err, containers, images) => {
         if (err) {

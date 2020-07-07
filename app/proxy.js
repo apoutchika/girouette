@@ -2,7 +2,7 @@
 
 const http = require('http')
 const https = require('https')
-const cache = require('./libs/cache')
+const cache = require('./libs/proxyCache')
 const SNICallback = require('./libs/SNICallback')
 
 const app = (req, res) => {

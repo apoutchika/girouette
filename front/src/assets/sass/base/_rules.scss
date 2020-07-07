@@ -96,10 +96,16 @@ body {
   margin: 10px;
 }
 
-.card h2 {
+.card .card--title {
   margin: 0;
+  display: flex;
+  align-items: center;
   padding: 5px 10px;
   background-color: lime;
+}
+
+.card .card--title h2 {
+  margin-right: auto;
 }
 
 .card ul {
@@ -126,4 +132,20 @@ body {
 
 .card ul li a:hover {
   text-decoration: underline;
+}
+
+@keyframes turn {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.turn {
+  display: block;
+  animation: turn 2s infinite;
+  animation-timing-function: linear;
 }

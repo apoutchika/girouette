@@ -2,7 +2,7 @@
 
 const EventEmitter = require('events')
 
-const cache = require('./cache')
+const cache = require('./proxyCache')
 
 const dialog = new EventEmitter()
 let io
