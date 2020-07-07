@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Star from '../star.svg'
+import Star from '../assets/svgs/star.svg'
 
 class Favorites extends React.Component {
   constructor(props) {

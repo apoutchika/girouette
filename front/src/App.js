@@ -1,11 +1,14 @@
 import React from 'react'
 import socketIOClient from 'socket.io-client'
 import Switch from 'react-switch'
-import Project from './Components/Project'
-import Favorites from './Components/Favorites'
-import CleanDocker from './Components/CleanDocker'
-import CleanDns from './Components/CleanDns'
+import SVG from './components/SVG'
+import Project from './components/Project'
+import Favorites from './components/Favorites'
+import CleanDocker from './components/CleanDocker'
+import CleanDns from './components/CleanDns'
+import PopinCertificate from './components/PopinCertificate'
 
+import Logo from './assets/svgs/logo.svg'
 import './assets/sass/main.scss'
 
 const ENDPOINT = `https://girouette.devel`
@@ -20,10 +23,12 @@ class App extends React.Component {
       favorites: [],
       socket: null,
       scheme: 'https',
+      certifPopin: false,
     }
 
     this.saveFavorites = this.saveFavorites.bind(this)
     this.switchFavorite = this.switchFavorite.bind(this)
+    this.toggleCertifPopin = this.toggleCertifPopin.bind(this)
   }
 
   componentDidMount() {
@@ -92,20 +97,43 @@ class App extends React.Component {
     }
   }
 
+  toggleCertifPopin() {
+    this.setState({
+        certifPopin: !this.state.certifPopin
+    })
+  }
+
   render() {
-    const { domains, domainsByGroup, favorites, scheme, socket } = this.state
+    const { domains, domainsByGroup, favorites, scheme, socket, certifPopin } = this.state
+
     return (
       <div className="App">
-        <h1>Girouette</h1>
+        <header className="header">
+            <div className="header__logo">
+                <img  src={ Logo } alt=""/>
+                <h1>Girouette</h1>
+            </div>
+
+            <button
+                className="header__certificate btn btn--reverse"
+                onClick={ this.toggleCertifPopin }
+            >
+                <SVG icon="key" extraClass="small-icon" />
+                Certificate
+            </button>
+
+            <CleanDns socket={socket} />
+            <CleanDocker socket={socket} />
+        </header>
 
         <div>
-          HTTPS
-          <Switch
-            onChange={() =>
-              this.setState({ scheme: scheme === 'http' ? 'https' : 'http' })
-            }
-            checked={scheme === 'https'}
-          />{' '}
+            HTTPS
+            <Switch
+                onChange={() =>
+                this.setState({ scheme: scheme === 'http' ? 'https' : 'http' })
+                }
+                checked={scheme === 'https'}
+            />
         </div>
 
         <Favorites favorites={favorites} domains={domains} scheme={scheme} />
@@ -128,21 +156,7 @@ class App extends React.Component {
             })}
         </ul>
 
-        <CleanDocker socket={socket} />
-        <CleanDns socket={socket} />
-
-        <div>
-          <a
-            href={ENDPOINT.replace(/^https/, 'http') + '/certificate'}
-            download
-          >
-            Download certificate
-          </a>
-          <ul>
-            <li>Chrome: chrome://settings/certificates</li>
-            <li>Firefox: about:preferences#privacy</li>
-          </ul>
-        </div>
+        <PopinCertificate active={certifPopin} toggleCertifPopin={ this.toggleCertifPopin } />
       </div>
     )
   }

@@ -1,6 +1,5 @@
-import React from 'react'
-
-import Wait from '../wait.svg'
+import React, { Fragment } from 'react'
+import SVG from './SVG'
 
 class CleanDns extends React.Component {
   constructor(props) {
@@ -39,20 +38,19 @@ class CleanDns extends React.Component {
     const { socket } = this.props
     const { dns } = this.state
     return (
-      <div>
-        {!dns && (
-          <button
-            onClick={(e) => {
-              socket.emit('dns')
-              this.setState({ dns: true })
-            }}
-            type="button"
-          >
-            Clean dns
-          </button>
-        )}
-        {dns && <img className="turn" width="30" src={Wait} alt="Clean" />}
-      </div>
+      <Fragment>
+        <button
+          onClick={(e) => {
+            socket.emit('dns')
+            this.setState({ dns: true })
+          }}
+          className={`header__dns btn btn--rich ${dns && 'loading'}`}
+          type="button"
+        >
+          <SVG icon="globe" extraClass="small-icon" />
+          Clean dns
+        </button>
+      </Fragment>
     )
   }
 }

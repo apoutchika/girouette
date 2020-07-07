@@ -4,6 +4,7 @@
 }
 
 body {
+  background-color: $athens;
   font-size: 1.7rem;
 
   &.noscroll {
@@ -36,17 +37,6 @@ body {
 
 
 // Julien
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 
 .favorites {
   display: flex;
@@ -89,63 +79,4 @@ body {
   list-style-type: none;
   margin: 0;
   padding: 0;
-}
-
-.card {
-  border: 1px solid lime;
-  margin: 10px;
-}
-
-.card .card--title {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  padding: 5px 10px;
-  background-color: lime;
-}
-
-.card .card--title h2 {
-  margin-right: auto;
-}
-
-.card ul {
-  padding: 20px 0;
-  list-style-type: none;
-}
-
-.card ul li {
-  display: flex;
-  justify-content: space-between;
-  padding: 3px 5px;
-}
-
-.card ul li a img {
-  position: relative;
-  top: -3px;
-}
-
-.card ul li a {
-  display: block;
-  padding: 3px;
-  text-decoration: none;
-}
-
-.card ul li a:hover {
-  text-decoration: underline;
-}
-
-@keyframes turn {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.turn {
-  display: block;
-  animation: turn 2s infinite;
-  animation-timing-function: linear;
 }
