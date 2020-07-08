@@ -7,3 +7,18 @@
 		transform: translate(-50%, -50%) rotate(360deg);
 	}
 }
+
+// Toast
+@keyframes toast {
+	0%,
+	100% {
+		bottom: 0;
+		transform: translate(-50%, 100%);
+	}
+
+	15%,
+	85% {
+		bottom: 25px;
+		transform: translate(-50%, 0);
+	}
+}

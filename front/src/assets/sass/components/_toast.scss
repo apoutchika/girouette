@@ -1,0 +1,14 @@
+.toast {
+	position: fixed;
+	z-index: 999;
+	left: 50%;
+	bottom: 0;
+	padding: 6px 20px;
+	border-radius: .25rem;
+	transform: translate(-50%, 100%);
+	background-color: $carolina;
+	animation: toast 4s $back-bezier 1;
+	font-size: 1.4rem;
+	color: $white;
+	font-weight: 700;
+}
