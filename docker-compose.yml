@@ -40,8 +40,6 @@ services:
       PORT: 3000
     networks:
       - girouette
-      - traefik
-      - webgateway
     labels:
       traefik.frontend.rule: 'Host:girouettedev.devel'
       traefik.port: 3000
@@ -57,12 +55,6 @@ services:
       girouette.group: Girouette
 
 networks:
-  traefik:
-    external:
-      name: traefik
   girouette:
     external:
       name: girouette
-  webgateway:
-    external:
-      name: traefikforwebdev_webgateway

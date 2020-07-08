@@ -1,16 +1,10 @@
 'use strict'
 
-const fs = require('fs-extra')
 const forge = require('node-forge')
 const getSerialNumber = require('./generateSerialNumber')
 
 module.exports = () => {
   const { privateKey, publicKey } = forge.pki.rsa.generateKeyPair(2048)
-
-  const rootCAKey = forge.pki.privateKeyToPem(privateKey)
-  const rootCAPub = forge.pki.publicKeyToPem(publicKey)
-  fs.writeFileSync('./rootCA.key', rootCAKey)
-  fs.writeFileSync('./rootCA.pub', rootCAPub)
 
   const cert = forge.pki.createCertificate()
 
@@ -20,7 +14,7 @@ module.exports = () => {
   cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 10)
 
   const attrs = [
-    { name: 'organizationName', value: '00 Girouette' },
+    { name: 'organizationName', value: 'Girouette' },
     { name: 'commonName', value: 'girouette.devel' }
   ]
 

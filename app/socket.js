@@ -19,7 +19,6 @@ module.exports = (io) => {
 
     socket.on('stop', (domain) => {
       dialog.emit('stop', domain)
-      console.log('stop', domain)
     })
 
     socket.on('prune', () => {
