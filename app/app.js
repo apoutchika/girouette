@@ -13,7 +13,10 @@ require('./socket')(io)
 
 app.get('/certificate', (req, res) => {
   res.setHeader('Content-type', 'application/octet-stream')
-  res.setHeader('Content-disposition', 'attachment; filename=rootCA.crt')
+  res.setHeader(
+    'Content-disposition',
+    'attachment; filename=GirouetteRootCA.crt'
+  )
   res.send(Buffer.from(rootCA.crt))
 })
 

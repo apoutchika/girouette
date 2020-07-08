@@ -20,7 +20,7 @@ module.exports = (domain) => {
   ])
   site.setSubject([{ name: 'commonName', value: domain }])
   site.setIssuer([
-    { name: 'organizationName', value: '00 Girouette' },
+    { name: 'organizationName', value: 'Girouette' },
     { name: 'commonName', value: 'girouette.devel' }
   ])
 
