@@ -34,6 +34,11 @@ class App extends React.Component {
   componentDidMount() {
     this.getFavorites()
 
+    const scheme = window.localStorage.getItem('scheme')
+    if (scheme) {
+      this.setState({ scheme })
+    }
+
     const socket = socketIOClient(ENDPOINT, {
       path: '/girouettedockerdata',
     })
@@ -99,41 +104,53 @@ class App extends React.Component {
 
   toggleCertifPopin() {
     this.setState({
-        certifPopin: !this.state.certifPopin
+      certifPopin: !this.state.certifPopin,
     })
   }
 
   render() {
-    const { domains, domainsByGroup, favorites, scheme, socket, certifPopin } = this.state
+    const {
+      domains,
+      domainsByGroup,
+      favorites,
+      scheme,
+      socket,
+      certifPopin,
+    } = this.state
 
     return (
       <div className="App">
         <header className="header">
-            <div className="header__logo">
-                <img  src={ Logo } alt=""/>
-                <h1>Girouette</h1>
-            </div>
+          <div className="header__logo">
+            <img src={Logo} alt="" />
+            <h1>Girouette</h1>
+          </div>
 
-            <button
-                className="header__certificate btn btn--reverse"
-                onClick={ this.toggleCertifPopin }
-            >
-                <SVG icon="key" extraClass="small-icon" />
-                Certificate
-            </button>
+          <button
+            className="header__certificate btn btn--reverse"
+            onClick={this.toggleCertifPopin}
+          >
+            <SVG icon="key" extraClass="small-icon" />
+            Certificate
+          </button>
 
-            <CleanDns socket={socket} />
-            <CleanDocker socket={socket} />
+          <CleanDns socket={socket} />
+          <CleanDocker socket={socket} />
         </header>
 
         <div>
-            HTTPS
-            <Switch
-                onChange={() =>
-                this.setState({ scheme: scheme === 'http' ? 'https' : 'http' })
+          HTTPS
+          <Switch
+            onChange={() =>
+              this.setState(
+                { scheme: scheme === 'http' ? 'https' : 'http' },
+                () => {
+                  window.localStorage.setItem('scheme', this.state.scheme)
                 }
-                checked={scheme === 'https'}
-            />
+              )
+            }
+            checked={scheme === 'https'}
+          />
         </div>
 
         <Favorites favorites={favorites} domains={domains} scheme={scheme} />
@@ -156,7 +173,10 @@ class App extends React.Component {
             })}
         </ul>
 
-        <PopinCertificate active={certifPopin} toggleCertifPopin={ this.toggleCertifPopin } />
+        <PopinCertificate
+          active={certifPopin}
+          toggleCertifPopin={this.toggleCertifPopin}
+        />
       </div>
     )
   }
