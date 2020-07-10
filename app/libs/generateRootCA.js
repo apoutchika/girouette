@@ -15,7 +15,7 @@ module.exports = () => {
 
   const attrs = [
     { name: 'organizationName', value: 'Girouette' },
-    { name: 'commonName', value: 'girouette.devel' }
+    { name: 'commonName', value: 'Girouette Authority' }
   ]
 
   cert.setSubject(attrs)

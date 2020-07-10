@@ -1,7 +1,17 @@
 #!/bin/bash
 
+
 echo ""
-echo "Clean old Girouette install..."
+echo -e "\e[34m> Test if has docker\e[39m\n"
+! docker -v &> /dev/null && echo -e "\n\e[31mDocker not found\e[39m" && exit
+
+docker volume create girouette_install
+function run_node () {
+  docker run --rm -ti --network="host" -v "girouette_install:/app" node:latest bash -c "${1}"
+}
+
+echo ""
+echo -e "\e[34m> Clean old Girouette install...\e[39m"
 echo ""
 
 [[ $(docker network ls --format "{{.Name}}" | grep 'girouette' | wc -l) == "0" ]] && docker network create girouette
@@ -12,24 +22,45 @@ echo ""
 
 [[ $(docker images --format "{{.Repository}}" | grep "apoutchika/girouette" | wc -l ) == "1" ]] && docker rmi apoutchika/girouette
 
+echo -e "\e[34m> Test port configuration\e[39m\n"
 
-echo ""
-echo "Prepare new install..."
-echo ""
+TEST_CONFIG=$(cat <<EOF
+const isPortReachable = require('is-port-reachable');
+const fs = require('fs')
+const chalk = require('chalk')
 
-docker volume create girouette_install
-
-function run_node () {
-  docker run --rm -ti -v "girouette_install:/app" node:latest bash -c "${1}"
+const test = async port => {
+  if(await isPortReachable(port, {host: 'localhost'})) {
+    console.log(chalk.red('> Girouette use port ' + port + ', and it not free'))
+    fs.writeFileSync('/app/fail', 'FAIL')
+  }
 }
+
+test(80)
+test(443)
+test(53)
+EOF
+)
+run_node "cd /app && npm install is-port-reachable chalk && node -e \"${TEST_CONFIG}\""
+
+FAIL=$(run_node "cat /app/fail")
+if [[ ${FAIL} == 'FAIL' ]];
+then
+  docker volume rm girouette_install
+  exit
+fi
+
+
+echo -e "\e[34m> Prepare new install...\e[39m"
+echo ""
+
+
 
 
 CONFIGURE=$(cat <<EOF
 const fs = require('fs')
 const inquirer = require('inquirer')
 
-console.log('') // space
-console.log('') // space
 inquirer.prompt([
 {
   type: 'input',
