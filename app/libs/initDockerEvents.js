@@ -37,10 +37,11 @@ const add = async (container) => {
 
   labelToHosts(get(container, 'Labels')).map(({ domain, port, project }) => {
     cache.set(domain, port, ip, project)
-    actives[container.Id] = {
+    actives[container.Id] = actives[container.Id] || {
       toDel: false,
-      domain
+      domains: []
     }
+    actives[container.Id].domains.push(domain)
   })
 }
 
@@ -66,7 +67,7 @@ const updateStatus = (data) => {
     Object.keys(actives)
       .filter((id) => actives[id].toDel)
       .map((id) => {
-        cache.del(actives[id].domain)
+        actives[id].domains.map((domain) => cache.del(domain))
         delete actives[id]
       })
 
