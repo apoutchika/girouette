@@ -72,7 +72,7 @@ const GetAnswer = (question) => {
         {
           ...question,
           address: '127.0.0.1',
-          ttl: 600
+          ttl: 86400 // 24h
         }
       ])
       return resolve(cache.get(key))

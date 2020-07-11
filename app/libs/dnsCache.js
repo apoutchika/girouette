@@ -1,7 +1,7 @@
 'use strict'
 
 const cache = new Map()
-const MAX = 500
+const MAX = 1000
 
 module.exports = {
   has: (key) => cache.has(key),
