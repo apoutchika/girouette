@@ -29,14 +29,13 @@ services:
   www:
     tty: true
     image: node:latest
-    command: sh -c "cd /app && npm run start"
+    command: sh -c "cd /app && CHOKIDAR_USEPOLLING=true npm run start"
     restart: always
     working_dir: /app
     volumes:
       - './front:/app'
     environment:
       NODE_ENV: development
-      CHOKIDAR_USEPOLLING: 'true'
       HOST: 0.0.0.0
       PORT: 3000
     networks:
