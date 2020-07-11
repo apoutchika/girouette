@@ -11,7 +11,9 @@ import PopinCertificate from './components/PopinCertificate'
 import Logo from './assets/svgs/logo.svg'
 import './assets/sass/main.scss'
 
-const ENDPOINT = `https://girouette.devel`
+const ENDPOINT = `http${
+  window.location.protocol === 'https:' ? 's' : ''
+}://girouette.devel`
 
 class App extends React.Component {
   constructor(props) {

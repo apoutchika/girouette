@@ -12,16 +12,16 @@ function run_node () {
 
 echo ""
 echo -e "\e[34m> Clean old Girouette install...\e[39m"
-echo ""
 
-[[ $(docker network ls --format "{{.Name}}" | grep 'girouette' | wc -l) == "0" ]] && docker network create girouette
-[[ $(docker volume ls --format "{{.Name}}" | grep 'girouette' | wc -l) == "0" ]] && docker volume create girouette
+[[ $(docker network ls --format "{{.Name}}" | grep '^girouette$' | wc -l) == "0" ]] && docker network create girouette
+[[ $(docker volume ls --format "{{.Name}}" | grep '^girouette$' | wc -l) == "0" ]] && docker volume create girouette
 
-[[ $(docker ps --format "{{.Names}}" | grep 'girouette' | wc -l) == "1" ]] && docker stop girouette
-[[ $(docker ps -a --format "{{.Names}}" | grep 'girouette' | wc -l) == "1" ]] && docker rm girouette
+[[ $(docker ps --format "{{.Names}}" | grep '^girouette$' | wc -l) == "1" ]] && docker stop girouette
+[[ $(docker ps -a --format "{{.Names}}" | grep '^girouette$' | wc -l) == "1" ]] && docker rm girouette
 
 [[ $(docker images --format "{{.Repository}}" | grep "apoutchika/girouette" | wc -l ) == "1" ]] && docker rmi apoutchika/girouette
 
+echo ""
 echo -e "\e[34m> Test port configuration\e[39m\n"
 
 TEST_CONFIG=$(cat <<EOF
