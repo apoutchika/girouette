@@ -19,6 +19,7 @@ services:
       TLDS: '.devel'
     volumes:
       - './app:/app'
+      - './front:/front'
       - './data:/data'
       - '/var/run/docker.sock:/var/run/docker.sock'
     labels:

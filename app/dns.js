@@ -8,13 +8,25 @@ const resolveDNS = Promise.promisify(dns.resolve)
 const cache = require('./libs/dnsCache')
 const isDomain = require('is-valid-domain')
 const get = require('lodash/get')
+const fs = require('fs')
 
 const server = DNS.createServer()
 
-const localTlds = get(process, 'env.TLDS', '')
+const localTlds = get(process, 'env.TLDS', '.devel')
   .split(',')
   .filter(Boolean)
   .map((tld) => new RegExp(tld + '$'))
+
+// save tld config for front
+const defaultTld = get(process, 'env.TLDS', '.devel')
+  .split(',')
+  .filter(Boolean)[0]
+if (defaultTld) {
+  fs.writeFileSync(
+    '/front/src/config.json',
+    JSON.stringify({ tld: defaultTld.replace(/^\./, '') })
+  )
+}
 
 const types = DNS.consts.QTYPE_TO_NAME
 const typeToAnswer = {

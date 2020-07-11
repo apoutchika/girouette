@@ -1,26 +1,24 @@
 import React, { Fragment } from 'react'
 import SVG from './SVG'
 
-const ENDPOINT = `https://girouette.devel`
-
 class PopinCertificate extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      copied: false
+      copied: false,
     }
   }
 
   clipboard(url) {
     navigator.clipboard.writeText(url)
 
-    this.setState({copied: true})
+    this.setState({ copied: true })
 
     setTimeout(() => {
-      this.setState({copied: false})
-    }, 5000);
-  } 
+      this.setState({ copied: false })
+    }, 5000)
+  }
 
   render() {
     const { active, toggleCertifPopin } = this.props
@@ -31,12 +29,10 @@ class PopinCertificate extends React.Component {
         <div className={`certif-popin ${active && 'is-active'}`}>
           <div className="certif-popin__container">
             <div className="certif-popin__header">
-              <h2 className="certif-popin__title">
-                Certificate
-              </h2>
+              <h2 className="certif-popin__title">Certificate</h2>
 
               <button
-                onClick={ toggleCertifPopin }
+                onClick={toggleCertifPopin}
                 className="certif-popin__close"
               >
                 <SVG icon="close" />
@@ -46,27 +42,32 @@ class PopinCertificate extends React.Component {
             <div className="text-center">
               <a
                 className="certif-popin__download btn btn--rich"
-                href={ENDPOINT.replace(/^https/, 'http') + '/certificate'}
-                download
+                href={new URL('/certificate', this.props.endpoint).href}
               >
                 <SVG icon="download" extraClass="small-icon" />
                 Download
               </a>
             </div>
 
-            <span onClick={() => this.clipboard('chrome://settings/certificates') } className="label label--chrome">
+            <span
+              onClick={() => this.clipboard('chrome://settings/certificates')}
+              className="label label--chrome"
+            >
               <SVG icon="chrome" extraClass="small-icon" />
               chrome://settings/certificates
             </span>
 
-            <span onClick={() => this.clipboard('about:preferences#privacy') } className="label label--firefox">
+            <span
+              onClick={() => this.clipboard('about:preferences#privacy')}
+              className="label label--firefox"
+            >
               <SVG icon="firefox" extraClass="small-icon" />
               about:preferences#privacy
             </span>
           </div>
         </div>
-        
-        { copied && <div className="toast">Copied to clipboard</div> }
+
+        {copied && <div className="toast">Copied to clipboard</div>}
       </Fragment>
     )
   }

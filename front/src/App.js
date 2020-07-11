@@ -7,13 +7,14 @@ import Favorites from './components/Favorites'
 import CleanDocker from './components/CleanDocker'
 import CleanDns from './components/CleanDns'
 import PopinCertificate from './components/PopinCertificate'
+import config from './config'
 
 import Logo from './assets/svgs/logo.svg'
 import './assets/sass/main.scss'
 
 const ENDPOINT = `http${
   window.location.protocol === 'https:' ? 's' : ''
-}://girouette.devel`
+}://girouette.${config.tld}`
 
 class App extends React.Component {
   constructor(props) {
@@ -177,6 +178,7 @@ class App extends React.Component {
 
         <PopinCertificate
           active={certifPopin}
+          endpoint={ENDPOINT}
           toggleCertifPopin={this.toggleCertifPopin}
         />
       </div>
