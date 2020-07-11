@@ -109,6 +109,7 @@ docker run \
   -v "girouette:/data" \
   -v "/var/run/docker.sock:/var/run/docker.sock" \
   --label girouette.domains="girouette.${TLD}:8080" \
+  --label girouette.group="Girouette" \
   girouette/girouette
 
 echo "####################################################################"
