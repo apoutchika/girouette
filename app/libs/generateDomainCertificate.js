@@ -21,7 +21,7 @@ module.exports = (domain) => {
   site.setSubject([{ name: 'commonName', value: domain }])
   site.setIssuer([
     { name: 'organizationName', value: 'Girouette' },
-    { name: 'commonName', value: 'girouette.devel' }
+    { name: 'commonName', value: 'Girouette Authority' }
   ])
 
   site.sign(privateKey, forge.md.sha256.create())
