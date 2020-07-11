@@ -8,7 +8,7 @@ import CleanDocker from './components/CleanDocker'
 import CleanDns from './components/CleanDns'
 import PopinCertificate from './components/PopinCertificate'
 
-import Logo from './assets/svgs/logo2.svg'
+import Logo from './assets/svgs/logo.svg'
 import './assets/sass/main.scss'
 
 const ENDPOINT = `http${
