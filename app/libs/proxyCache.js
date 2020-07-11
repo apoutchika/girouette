@@ -12,7 +12,8 @@ module.exports.clear = () => {
 module.exports.set = (domain, port, ip, project) => {
   const proxy = new httpProxy.createProxyServer({
     ws: true,
-    target: `http://${ip}:${port}`
+    target: `http://${ip}:${port}`,
+    xfwd: true
   })
 
   proxy.on('error', function (err, req, res) {
