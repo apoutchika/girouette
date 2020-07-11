@@ -19,7 +19,7 @@ echo -e "\e[34m> Clean old Girouette install...\e[39m"
 [[ $(docker ps --format "{{.Names}}" | grep '^girouette$' | wc -l) == "1" ]] && docker stop girouette
 [[ $(docker ps -a --format "{{.Names}}" | grep '^girouette$' | wc -l) == "1" ]] && docker rm girouette
 
-[[ $(docker images --format "{{.Repository}}" | grep "apoutchika/girouette" | wc -l ) == "1" ]] && docker rmi apoutchika/girouette
+[[ $(docker images --format "{{.Repository}}" | grep "girouette/girouette" | wc -l ) == "1" ]] && docker rmi girouette/girouette
 
 echo ""
 echo -e "\e[34m> Test port configuration\e[39m\n"
@@ -109,7 +109,7 @@ docker run \
   -v "girouette:/data" \
   -v "/var/run/docker.sock:/var/run/docker.sock" \
   --label girouette.domains="girouette.${TLD}:8080" \
-  apoutchika/girouette
+  girouette/girouette
 
 echo "####################################################################"
 echo "##                                                                ##"
