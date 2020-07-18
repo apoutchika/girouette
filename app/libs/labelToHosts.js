@@ -17,8 +17,21 @@ const getProject = (labels, domain) => {
 }
 
 module.exports = (labels) => {
+  // domains label (with s)
   if (labels['girouette.domains']) {
     return labels['girouette.domains'].split(',').map((domainAndPort) => {
+      const [domain, port] = domainAndPort.split(':')
+      return {
+        project: getProject(labels, domain),
+        domain,
+        port: port || 80
+      }
+    })
+  }
+
+  // domain label (without s)
+  if (labels['girouette.domain']) {
+    return labels['girouette.domain'].split(',').map((domainAndPort) => {
       const [domain, port] = domainAndPort.split(':')
       return {
         project: getProject(labels, domain),
