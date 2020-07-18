@@ -14,13 +14,15 @@ services:
       - 80:80
       - 53:5353
       - 53:5353/udp
+    networks:
+      - girouette
     environment:
       NODE_ENV: development
       TLDS: '.devel'
     volumes:
       - './app:/app'
       - './front:/front'
-      - './data:/data'
+      - 'girouette:/data'
       - '/var/run/docker.sock:/var/run/docker.sock'
     labels:
       girouette.domains: girouette.devel:8080
@@ -53,6 +55,11 @@ services:
     labels:
       girouette.domains: whoami.devel:80
       girouette.group: Girouette
+
+volumes:
+  girouette:
+    external:
+      name: girouette
 
 networks:
   girouette:

@@ -5,110 +5,97 @@ const docker = Promise.promisifyAll(
   new Docker({ socketPath: '/var/run/docker.sock' })
 )
 const get = require('lodash/get')
+const has = require('lodash/has')
 const cache = require('./proxyCache')
 const dialog = require('./dialog')
 const labelToHosts = require('./labelToHosts')
 
-const actives = {}
-const networks = new Map()
+const actives = new Map()
 
-const add = async (container) => {
-  // console.log(JSON.stringify(container, null, 2))
-  // Not in external network
-  if (Object.keys(get(container, 'NetworkSettings.Networks', [])) === 0) {
+const getContainer = (id) => {
+  return new Promise((resolve, reject) => {
+    docker.getContainer(id).inspect((err, container) => {
+      if (err) {
+        return reject(err)
+      }
+
+      resolve(container)
+    })
+  })
+}
+
+const add = async (id) => {
+  const container = await getContainer(id).catch(console.error)
+  if (!container) {
+    return false
+  }
+
+  const hosts = labelToHosts(get(container, 'Config.Labels'))
+  if (hosts.length === 0) {
     return
   }
 
-  const network = Object.keys(container.NetworkSettings.Networks)[0]
-  const id = get(container, `NetworkSettings.Networks.${network}.NetworkID`)
-  const ip = get(container, `NetworkSettings.Networks.${network}.IPAddress`)
-  if (!networks.has(network)) {
-    networks.set(network, id) // Add network to girouette
-    await new Promise((resolve, reject) => {
-      docker.getNetwork(id).connect({ Container: 'girouette' }, (err, ok) => {
+  const ip = get(container, 'NetworkSettings.Networks.girouette.IPAddress')
+
+  // Add girouette network if not exists
+  if (!ip) {
+    return docker
+      .getNetwork('girouette')
+      .connect({ Container: id }, (err, ok) => {
         if (err) {
-          reject(err)
+          return console.error(err)
         }
 
-        resolve(ok)
+        add(id).catch(console.error)
       })
-    })
   }
 
-  labelToHosts(get(container, 'Labels')).map(({ domain, port, project }) => {
+  const domains = []
+  hosts.map(({ domain, port, project }) => {
     cache.set(domain, port, ip, project)
-    actives[container.Id] = actives[container.Id] || {
-      toDel: false,
-      domains: []
-    }
-    actives[container.Id].domains.push(domain)
+    domains.push(domain)
   })
+
+  actives.set(container.Id, domains)
+  return dialog.emit('domains')
 }
 
-const updateStatus = (data) => {
-  Object.keys(actives).map((id) => {
-    actives[id].toDel = true
-  })
-
-  docker.listContainers((err, containers) => {
-    if (err) {
-      return console.error(err)
-    }
-
-    containers.map((container) => {
-      const id = container.Id
-      if (actives[id]) {
-        actives[id].toDel = false
-        return
-      }
-      add(container)
-    })
-
-    Object.keys(actives)
-      .filter((id) => actives[id].toDel)
-      .map((id) => {
-        actives[id].domains.map((domain) => cache.del(domain))
-        delete actives[id]
-      })
-
-    dialog.emit('domains')
-  })
-}
-
-// Find Girouette container and add used networks, and run updateStatus
 docker.listContainers((err, containers) => {
   if (err) {
     return console.error(err)
   }
-
   containers.map((container) => {
-    if (container.Names[0] === '/girouette') {
-      return Object.keys(get(container, 'NetworkSettings.Networks', [])).map(
-        (network) => {
-          const id = get(
-            container,
-            `NetworkSettings.Networks.${network}.NetworkID`
-          )
-          networks.set(network, id)
-        }
-      )
-    }
+    add(container.Id).catch(console.error)
   })
-
-  updateStatus()
 })
 
-docker.getEvents(
-  { filters: { type: ['container'], event: ['start', 'stop'] } },
-  (err, data) => {
-    if (err) {
-      return console.error(err)
+const createEvent = (types, cb) => {
+  docker.getEvents(
+    { filters: { type: ['container'], event: types } },
+    (err, data) => {
+      if (err) {
+        return console.error(err)
+      }
+      data.on('data', (bufferData) => {
+        try {
+          const data = JSON.parse(bufferData.toString())
+          cb(data.id)
+        } catch (err) {
+          console.error(err)
+        }
+      })
     }
-    data.on('data', (data) => {
-      updateStatus()
-    })
+  )
+}
+
+createEvent(['start'], (id) => add(id))
+createEvent(['stop', 'kill'], (id) => {
+  if (actives.has(id)) {
+    actives.get(id).map((domain) => cache.del(domain))
+    actives.delete(id)
+    return dialog.emit('domains')
   }
-)
+})
 
 dialog.on('stop', (project) => {
   docker.listContainers((err, containers) => {
