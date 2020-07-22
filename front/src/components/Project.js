@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { Fragment } from 'react'
+import SVG from './SVG'
 
-import Off from '../off.svg'
-import Wait from '../wait.svg'
 import Star from '../assets/svgs/star.svg'
 import StarBorder from '../assets/svgs/star_border.svg'
 
@@ -25,23 +24,20 @@ class Project extends React.Component {
   render() {
     const { group, domains, scheme, favorites, switchFavorite } = this.props
     return (
-      <li className="card" key={`${group}`}>
-        <div className="card--title">
-          <h2>{group}</h2>
+      <li className={`project-card ${this.state.off && 'is-stop'}`} key={`${group}`}>
+        <div className="project-card__header">
+          <h2 class="project-card__title">
+            {group}
+          </h2>
+
           {group !== 'Girouette' && (
-            <>
-              {!this.state.off && (
-                <a href="#top" onClick={this.off}>
-                  <img width="30" src={Off} alt="Stop" />
-                </a>
-              )}
-              {this.state.off && (
-                <img className="turn" width="30" src={Wait} alt="Stop" />
-              )}
-            </>
+            <a class="project-card__power" href="#top" onClick={this.off}>
+              <SVG icon="power" />
+            </a>
           )}
         </div>
-        <ul>
+
+        <ul className="project-card__list">
           {domains.map((domain) => {
             return (
               <li key={`${group}_${domain}`}>

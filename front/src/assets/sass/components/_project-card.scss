@@ -1,0 +1,37 @@
+.project-card {
+	background-color: $white;
+	box-shadow: $shadow-big;
+	border-radius: .25rem;
+	overflow: hidden;
+
+	&__header {
+		padding: 10px 20px;
+		display: flex;
+		justify-content: space-between;
+		background-color: $carolina;
+		color: $white;
+		box-shadow: $shadow-big;
+	}
+
+	&__power {
+		svg {
+			width: 25px;
+			height: 25px;
+			fill: $white;
+		}
+
+		&:hover {
+			svg {
+				fill: $rich;
+			}
+		}
+	}
+
+	&__list {
+		padding: 20px;
+	}
+
+	&.is-stop {
+		background-color: red;
+	}
+}

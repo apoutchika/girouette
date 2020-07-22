@@ -35,6 +35,17 @@ body {
   max-width: $wrapper-small;
 }
 
+// Projects
+.projects-list {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+
+  .project-card {
+    flex: 0 1 31%;
+    margin-bottom: 40px;
+  }
+}
 
 // Julien
 
@@ -70,13 +81,4 @@ body {
 
 .favorites li a:hover {
   text-decoration: underline;
-}
-
-.cards {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
 }
