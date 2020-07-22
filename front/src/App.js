@@ -141,6 +141,9 @@ class App extends React.Component {
           <CleanDocker socket={socket} />
         </header>
 
+        <section className="wrapper">
+          <Favorites favorites={favorites} domains={domains} scheme={scheme} />
+
         <div>
           HTTPS
           <Switch
@@ -156,25 +159,24 @@ class App extends React.Component {
           />
         </div>
 
-        <Favorites favorites={favorites} domains={domains} scheme={scheme} />
-
-        <ul className="cards">
-          {Object.keys(domainsByGroup)
-            .sort()
-            .map((group) => {
-              return (
-                <Project
-                  key={group}
-                  group={group}
-                  socket={socket}
-                  domains={domainsByGroup[group].sort()}
-                  scheme={scheme}
-                  favorites={favorites}
-                  switchFavorite={this.switchFavorite}
-                />
-              )
-            })}
-        </ul>
+          <ul className="projects-list">
+            {Object.keys(domainsByGroup)
+              .sort()
+              .map((group) => {
+                return (
+                  <Project
+                    key={group}
+                    group={group}
+                    socket={socket}
+                    domains={domainsByGroup[group].sort()}
+                    scheme={scheme}
+                    favorites={favorites}
+                    switchFavorite={this.switchFavorite}
+                  />
+                )
+              })}
+          </ul>
+        </section>
 
         <footer className="footer">
           <ul>
