@@ -27,11 +27,13 @@ class App extends React.Component {
       socket: null,
       scheme: 'https',
       certifPopin: false,
+      sidebar: localStorage.getItem('girouetteSidebar') ? JSON.parse(localStorage.getItem('girouetteSidebar')) : false,
     }
 
     this.saveFavorites = this.saveFavorites.bind(this)
     this.switchFavorite = this.switchFavorite.bind(this)
     this.toggleCertifPopin = this.toggleCertifPopin.bind(this)
+    this.toggleSidebar = this.toggleSidebar.bind(this)
   }
 
   componentDidMount() {
@@ -111,6 +113,13 @@ class App extends React.Component {
     })
   }
 
+  toggleSidebar() {
+    localStorage.setItem('girouetteSidebar', !this.state.sidebar)
+    this.setState({
+      sidebar: !this.state.sidebar,
+    })
+  }
+
   render() {
     const {
       domains,
@@ -119,10 +128,11 @@ class App extends React.Component {
       scheme,
       socket,
       certifPopin,
+      sidebar,
     } = this.state
 
     return (
-      <div className="App">
+      <div className={`content ${sidebar && 'with-sidebar'}`}>
         <header className="header">
           <div className="header__logo">
             <img src={Logo} alt="" />
@@ -141,25 +151,28 @@ class App extends React.Component {
           <CleanDocker socket={socket} />
         </header>
 
-        <section className="wrapper">
-          <Favorites favorites={favorites} domains={domains} scheme={scheme} />
+        <section className="main-content">
+          <div className="switch">
+            <span className="switch__label">
+              HTTPS
+            </span>
 
-        <div>
-          HTTPS
-          <Switch
-            onChange={() =>
-              this.setState(
-                { scheme: scheme === 'http' ? 'https' : 'http' },
-                () => {
+            <Switch
+              className='https-switch'
+              offColor='#7d898d'
+              onColor='#00A8E8'
+              onChange={() =>
+                this.setState({
+                  scheme: scheme === 'http' ? 'https' : 'http'
+                }, () => {
                   window.localStorage.setItem('scheme', this.state.scheme)
-                }
-              )
-            }
-            checked={scheme === 'https'}
-          />
-        </div>
+                })
+              }
+              checked={scheme === 'https'}
+            />
+          </div>
 
-          <ul className="projects-list">
+          <ul className="projects-list wrapper">
             {Object.keys(domainsByGroup)
               .sort()
               .map((group) => {
@@ -206,6 +219,8 @@ class App extends React.Component {
           endpoint={ENDPOINT}
           toggleCertifPopin={this.toggleCertifPopin}
         />
+
+        <Favorites favorites={favorites} domains={domains} scheme={scheme} toggleSidebar={this.toggleSidebar} active={sidebar} />
       </div>
     )
   }

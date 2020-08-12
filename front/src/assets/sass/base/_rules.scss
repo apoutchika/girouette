@@ -12,15 +12,27 @@ body {
   }
 }
 
+.content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: padding-left .25s;
+
+  .footer {
+    margin-top: auto;
+  }
+
+  &.with-sidebar {
+    padding-left: 280px;
+  }
+}
+
 // Layout
 .wrapper,
 .wrapper-small {
   width: 100%;
   margin: 0 auto;
-
-  @include breakpoint(medium) {
-    padding: 0 20px;
-  }
+  padding: 0 30px;
 }
 
 .wrapper {
@@ -35,50 +47,25 @@ body {
   max-width: $wrapper-small;
 }
 
+.main-content {
+  position: relative;
+}
+
 // Projects
 .projects-list {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
+  padding-top: 80px;
 
   .project-card {
     flex: 0 1 31%;
     margin-bottom: 40px;
   }
-}
 
-// Julien
-
-.favorites {
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.favorites li {
-  margin: 0;
-  padding: 0;
-}
-
-.favorites li a {
-  display: block;
-  padding: 5px;
-  margin: 10px;
-  border: 1px solid lime;
-  text-decoration: none;
-  line-height: 30px;
-}
-
-.favorites li a img {
-  position: relative;
-  margin: 0 5px 0 0;
-  padding: 0;
-  top: 4px;
-}
-
-.favorites li a:hover {
-  text-decoration: underline;
+  &::after {
+    content: '';
+    flex: 0 1 31%;
+    margin-bottom: 40px;
+  }
 }

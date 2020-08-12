@@ -4,12 +4,15 @@ $white: #fff;
 
 // Primary
 $rich:     #00171f;
+$rich-20:  rgba($rich, .2);
+$rich-50:  rgba($rich, .5);
 $prussian: #003459;
 $cgblue:   #007EA7;
 $carolina: #00A8E8;
 
 // Secondary
 $athens: #fbfbfc;
+$oslo:   #7d898d;
 $athens-opacity-90: rgba($athens, .9);
 
 // Shadows

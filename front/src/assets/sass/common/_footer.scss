@@ -1,11 +1,26 @@
 .footer {
-  li {
-    display: inline-block;
-    padding: 5px;
+	padding: 40px 20px 20px;
 
-    a {
-      display: inline-block;
-      padding: 10px;
-    }
-  }
+	ul {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		li {
+			a {
+				transition: color .25s;
+				color: $rich-50;
+				font-size: 1.3rem;
+				font-weight: 700;
+
+				&:hover {
+					color: $rich;
+				}
+			}
+
+			& + li {
+				margin-left: 60px;
+			}
+		}
+	}
 }

@@ -1,0 +1,23 @@
+.switch {
+	display: flex;
+	position: absolute;
+	align-items: center;
+	top: 20px;
+	right: 30px;
+
+	&__label {
+		margin-right: 6px;
+		color: $rich-50;
+		font-weight: 700;
+		font-size: 1.4rem;
+	}
+
+	.https-switch {
+		.react-switch-handle {
+			width: 22px !important;
+			height: 22px !important;
+			top: 3px !important;
+			left: 2px;
+		}
+	}
+}

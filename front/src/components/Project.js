@@ -1,8 +1,5 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import SVG from './SVG'
-
-import Star from '../assets/svgs/star.svg'
-import StarBorder from '../assets/svgs/star_border.svg'
 
 class Project extends React.Component {
   constructor(props) {
@@ -24,40 +21,38 @@ class Project extends React.Component {
   render() {
     const { group, domains, scheme, favorites, switchFavorite } = this.props
     return (
-      <li className={`project-card ${this.state.off && 'is-stop'}`} key={`${group}`}>
+      <li className={`project-card ${this.state.off && 'is-stop'} ${group === 'Girouette' && 'is-girouette'}`} key={`${group}`}>
         <div className="project-card__header">
-          <h2 class="project-card__title">
+          <h2 className="project-card__title">
             {group}
           </h2>
 
           {group !== 'Girouette' && (
-            <a class="project-card__power" href="#top" onClick={this.off}>
+            <button className="project-card__power" onClick={this.off}>
               <SVG icon="power" />
-            </a>
+            </button>
           )}
         </div>
 
         <ul className="project-card__list">
           {domains.map((domain) => {
             return (
-              <li key={`${group}_${domain}`}>
+              <li key={`${group}_${domain}`} className="project-card__item">
                 <a
                   href={`${scheme}://${domain}`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="project-card__link"
                 >
                   {scheme}://{domain}
                 </a>
-                <a
-                  href="#top"
-                  className="favorite-link"
+
+                <button
+                  className="project-card__favorite"
                   onClick={switchFavorite(domain)}
                 >
-                  <img
-                    alt="Favorite"
-                    src={favorites.includes(domain) ? Star : StarBorder}
-                  />
-                </a>
+                  <SVG icon={ favorites.includes(domain) ? 'star' : 'star-o' } />
+                </button>
               </li>
             )
           })}
