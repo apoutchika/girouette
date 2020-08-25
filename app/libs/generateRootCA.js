@@ -11,7 +11,7 @@ module.exports = () => {
   cert.publicKey = publicKey
   cert.serialNumber = getSerialNumber()
   cert.validity.notBefore = new Date()
-  cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 10)
+  cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 1)
 
   const attrs = [
     { name: 'organizationName', value: 'Girouette' },

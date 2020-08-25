@@ -13,7 +13,7 @@ module.exports = (domain) => {
   site.publicKey = publicKey
   site.serialNumber = getSerialNumber()
   site.validity.notBefore = new Date()
-  site.validity.notAfter.setFullYear(site.validity.notBefore.getFullYear() + 5)
+  site.validity.notAfter.setFullYear(site.validity.notBefore.getFullYear() + 1)
 
   site.setExtensions([
     { name: 'subjectAltName', altNames: [{ type: 2, value: domain }] }
