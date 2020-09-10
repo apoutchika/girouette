@@ -41,7 +41,7 @@ class PopinCertificate extends React.Component {
 
             <div className="text-center">
               <a
-                className="certif-popin__download btn btn--rich"
+                className="certif-popin__download btn btn--secondary"
                 href={new URL('/certificate', this.props.endpoint).href}
               >
                 <SVG icon="download" extraClass="small-icon" />

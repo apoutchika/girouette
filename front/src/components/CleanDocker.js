@@ -47,7 +47,7 @@ class CleanDocker extends React.Component {
             socket.emit('prune')
             this.setState({ clean: true })
           }}
-          className={`header__docker btn btn--rich ${clean && 'loading'}`}
+          className={`header__docker btn btn--secondary ${clean && 'loading'}`}
           type="button"
         >
           <SVG icon="docker" />

@@ -1,4 +1,6 @@
 .favorites {
+	$f: &;
+
 	position: fixed;
 	z-index: 10;
 	top: 0;
@@ -11,12 +13,32 @@
 	box-shadow: 6px 0 7px 0 rgba(0, 0, 0, .1);
 
 	&__toggle {
+		display: flex;
 		position: absolute;
-		top: 90px;
-		right: -30px;
-		background-color: red;
+		bottom: 0;
+		right: -50px;
+		width: 50px;
+		height: 50px;
+		background-color: $secondary;
+		align-items: center;
+		justify-content: center;
 		padding: 0;
-		transform: translateX(100%);
+		transition: right .3s, left .3s, background-color .25s;
+		color: $secondary;
+		font-weight: 700;
+		font-size: 1.4rem;
+		text-transform: uppercase;
+
+		.icon {
+			width: 14px;
+			height: 14px;
+			transition: transform .25s, fill .25s;
+			fill: $white;
+		}
+
+		&:hover {
+			background-color: lighten($secondary, 10%);
+		}
 	}
 
 	&__header {
@@ -24,7 +46,7 @@
 		align-items: center;
 		height: 64px;
 		padding: 0 20px;
-		background-color: $rich;
+		background-color: $secondary;
 		color: $white;
 		box-shadow: $shadow-small;
 		font-weight: 700;
@@ -41,14 +63,14 @@
 
 	&__list {
 		&__item {
-			border-bottom: 1px solid $rich-20;
+			border-bottom: 1px solid $secondary-30;
 		}
 
 		&__link {
 			display: block;
 			padding: 15px;
 			transition: color .25s;
-			color: $rich;
+			color: $secondary;
 			font-weight: 600;
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -58,16 +80,75 @@
 				width: 20px;
 				height: 20px;
 				margin-right: 10px;
-				fill: $rich;
+				fill: $secondary;
 			}
 
 			&:hover {
-				color: $carolina;
+				color: lighten($secondary, 20%);
+			}
+		}
+	}
+
+	&__column-switcher {
+		position: absolute;
+		bottom: 10px;
+		left: 10px;
+		padding: 0;
+
+		.icon {
+			width: 30px;
+			height: 30px;
+			transition: fill .25s;
+			fill: $secondary-30;
+		}
+
+		&:hover {
+			.icon {
+				fill: $secondary-50;
+			}
+		}
+	}
+
+	&--right {
+		right: 0;
+		left: auto;
+		transform: translateX(100%);
+
+		#{$f} {
+			&__toggle {
+				right: auto;
+				left: -50px;
+				transform: rotate(180deg);
+			}
+
+			&__column-switcher {
+				right: 10px;
+				left: auto;
+			}
+		}
+
+		&.is-active {
+			#{$f} {
+				&__toggle {
+					left: 0;
+				}
 			}
 		}
 	}
 
 	&.is-active {
 		transform: translateX(0);
+
+		#{$f} {
+			&__toggle {
+				right: 0;
+
+				.icon {
+					margin-left: 0;
+					margin-right: 5px;
+					transform: rotate(180deg);
+				}
+			}
+		}
 	}
 }

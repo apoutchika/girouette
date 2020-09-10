@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import SVG from './SVG'
 
 class Favorites extends React.Component {
@@ -15,13 +15,14 @@ class Favorites extends React.Component {
   }
 
   render() {
-    const { favorites, domains, scheme, toggleSidebar, active } = this.props
+    const { favorites, domains, scheme, toggleSidebar, toggleSidebarDirection, sidebarLeft, active } = this.props
 
     return (
-      <div className={`favorites ${active && 'is-active'}`}>
+      <div className={`favorites ${active && 'is-active'} ${!sidebarLeft && 'favorites--right' }`}>
         <button className="favorites__toggle" onClick={toggleSidebar}>
-          toggle
+          <SVG icon="chevronRight" />
         </button>
+
         <div className="favorites__header">
           <SVG icon="star" />
           <h2>Favorites</h2>
@@ -45,6 +46,10 @@ class Favorites extends React.Component {
               )
             })}
         </ul>
+
+        <button className="favorites__column-switcher" onClick= {toggleSidebarDirection}>
+          { !sidebarLeft ? <SVG icon="columnLeft" /> : <SVG icon="columnRight" /> }
+        </button>
       </div>
     )
   }

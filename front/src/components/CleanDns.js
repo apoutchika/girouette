@@ -44,7 +44,7 @@ class CleanDns extends React.Component {
             socket.emit('dns')
             this.setState({ dns: true })
           }}
-          className={`header__dns btn btn--rich ${dns && 'loading'}`}
+          className={`header__dns btn btn--secondary ${dns && 'loading'}`}
           type="button"
         >
           <SVG icon="globe" extraClass="small-icon" />

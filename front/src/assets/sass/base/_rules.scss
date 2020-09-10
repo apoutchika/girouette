@@ -16,7 +16,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  transition: padding-left .25s;
+  transition: padding .25s;
 
   .footer {
     margin-top: auto;
@@ -24,6 +24,11 @@ body {
 
   &.with-sidebar {
     padding-left: 280px;
+
+    &.with-sidebar--right {
+      padding-left: 0;
+      padding-right: 280px;
+    }
   }
 }
 

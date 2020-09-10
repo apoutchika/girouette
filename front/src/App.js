@@ -28,12 +28,14 @@ class App extends React.Component {
       scheme: 'https',
       certifPopin: false,
       sidebar: localStorage.getItem('girouetteSidebar') ? JSON.parse(localStorage.getItem('girouetteSidebar')) : false,
+      sidebarLeft: localStorage.getItem('girouetteSidebarLeft') ? JSON.parse(localStorage.getItem('girouetteSidebarLeft')) : true,
     }
 
     this.saveFavorites = this.saveFavorites.bind(this)
     this.switchFavorite = this.switchFavorite.bind(this)
     this.toggleCertifPopin = this.toggleCertifPopin.bind(this)
     this.toggleSidebar = this.toggleSidebar.bind(this)
+    this.toggleSidebarDirection = this.toggleSidebarDirection.bind(this)
   }
 
   componentDidMount() {
@@ -120,6 +122,13 @@ class App extends React.Component {
     })
   }
 
+  toggleSidebarDirection() {
+    localStorage.setItem('girouetteSidebarLeft', !this.state.sidebarLeft)
+    this.setState({
+      sidebarLeft: !this.state.sidebarLeft,
+    })
+  }
+
   render() {
     const {
       domains,
@@ -129,10 +138,11 @@ class App extends React.Component {
       socket,
       certifPopin,
       sidebar,
+      sidebarLeft
     } = this.state
 
     return (
-      <div className={`content ${sidebar && 'with-sidebar'}`}>
+      <div className={`content ${sidebar && 'with-sidebar'} ${!sidebarLeft && 'with-sidebar--right'}`}>
         <header className="header">
           <div className="header__logo">
             <img src={Logo} alt="" />
@@ -160,7 +170,7 @@ class App extends React.Component {
             <Switch
               className='https-switch'
               offColor='#7d898d'
-              onColor='#00A8E8'
+              onColor='#0075ff'
               onChange={() =>
                 this.setState({
                   scheme: scheme === 'http' ? 'https' : 'http'
@@ -220,7 +230,7 @@ class App extends React.Component {
           toggleCertifPopin={this.toggleCertifPopin}
         />
 
-        <Favorites favorites={favorites} domains={domains} scheme={scheme} toggleSidebar={this.toggleSidebar} active={sidebar} />
+        <Favorites favorites={favorites} domains={domains} scheme={scheme} toggleSidebar={this.toggleSidebar} toggleSidebarDirection={this.toggleSidebarDirection} sidebarLeft={sidebarLeft} active={sidebar} />
       </div>
     )
   }

@@ -54,7 +54,7 @@
 	}
 
 	&:hover {
-		background-color: $prussian;
+		background-color: lighten($secondary, 10%);
 	}
 
 	&--reverse {
@@ -67,19 +67,19 @@
 
 		&:hover {
 			background-color: $white;
-			color: $carolina;
+			color: $main;
 
 			svg {
-				fill: $carolina;
+				fill: $main;
 			}
 		}
 	}
 
-	&--rich {
-		background-color: $rich;
+	&--secondary {
+		background-color: $secondary;
 
 		&::before {
-			background-color: $rich;
+			background-color: $secondary;
 		}
 	}
 

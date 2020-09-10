@@ -27,7 +27,7 @@
 	}
 
 	&__title {
-		color: $rich;
+		color: $secondary;
 		font-size: 3.2rem;
 		line-height: 1;
 	}
@@ -43,7 +43,7 @@
 		align-items: center;
 		padding: 6px 10px;
 		transition: color .25s;
-		color: $rich;
+		color: $secondary;
 		border-radius: .25rem;
 		font-size: 1.4rem;
 		font-weight: 700;
@@ -54,7 +54,7 @@
 			width: 20px;
 			height: 20px;
 			transition: fill .25s;
-			fill: $rich;
+			fill: $secondary;
 		}
 
 		&::before {
@@ -69,10 +69,10 @@
 		}
 
 		&:hover {
-			color: $prussian;
+			color: lighten($secondary, 20%);
 
 			svg {
-				fill: $prussian;
+				fill: lighten($secondary, 20%);
 			}
 		}
 
@@ -96,12 +96,12 @@
 
 		svg {
 			transition: fill .25s;
-			fill: $rich;
+			fill: $secondary;
 		}
 
 		&:hover {
 			svg {
-				fill: $prussian;
+				fill: lighten($secondary, 10%);
 			}
 		}
 	}
