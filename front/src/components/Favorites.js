@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import SVG from './SVG'
 
 class Favorites extends React.Component {
