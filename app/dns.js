@@ -9,6 +9,7 @@ const cache = require('./libs/dnsCache')
 const isDomain = require('is-valid-domain')
 const get = require('lodash/get')
 const fs = require('fs')
+const proxyCache = require('./libs/proxyCache')
 
 const server = DNS.createServer()
 
@@ -67,7 +68,10 @@ const GetAnswer = (question) => {
       return resolve([])
     }
 
-    if (localTlds.find((tld) => question.name.match(tld))) {
+    if (
+      proxyCache.get(question.name) ||
+      localTlds.find((tld) => question.name.match(tld))
+    ) {
       cache.set(key, [
         {
           ...question,
