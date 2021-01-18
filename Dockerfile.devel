@@ -1,9 +1,24 @@
-FROM node:latest
+FROM node:14
 
-COPY ./app /app
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends \
+      dnsmasq \
+      supervisor \
+      vim
+
+RUN rm -rf /var/lib/apt/lists/*
+
+
+RUN echo "cache-size=5000" >> /etc/dnsmasq.conf
+RUN echo "conf-dir=/etc/dnsmasq.d" >> /etc/dnsmasq.conf
+RUN echo "user=root" >> /etc/dnsmasq.conf
 
 RUN npm i -g nodemon
+
+RUN mkdir -p /app
 WORKDIR /app
 
+COPY ./supervisor.conf /supervisor.conf
+
 EXPOSE 80 8080 443 5353
-CMD nodemon index.js
+CMD supervisord -c /supervisor.conf

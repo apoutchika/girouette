@@ -18,7 +18,7 @@ services:
       - girouette
     environment:
       NODE_ENV: development
-      TLDS: '.devel'
+      TLDS: 'address=/.devel/127.0.0.1'
     volumes:
       - './app:/app'
       - './front:/front'

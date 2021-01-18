@@ -6,7 +6,11 @@ const http = require('http').createServer(app)
 const rootCA = require('/data/rootCA.json')
 
 const io = require('socket.io')(http, {
-  path: '/girouettedockerdata'
+  path: '/girouettedockerdata',
+  cors: {
+    origin: true,
+    credentials: true
+  }
 })
 
 require('./socket')(io)

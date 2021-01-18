@@ -5,7 +5,6 @@ const docker = Promise.promisifyAll(
   new Docker({ socketPath: '/var/run/docker.sock' })
 )
 const get = require('lodash/get')
-const has = require('lodash/has')
 const cache = require('./proxyCache')
 const dialog = require('./dialog')
 const labelToHosts = require('./labelToHosts')
@@ -110,15 +109,4 @@ dialog.on('stop', (project) => {
       }
     })
   })
-})
-
-dialog.on('prune', async (cb) => {
-  Promise.props({
-    containers: docker.pruneContainersAsync(null),
-    images: docker.pruneImagesAsync({ filters: { dangling: { false: true } } })
-  })
-    .then(({ containers, images }) => {
-      cb(null, containers, images)
-    })
-    .catch(cb)
 })

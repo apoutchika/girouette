@@ -1,0 +1,117 @@
+2021-01-16 12:54:58,190 CRIT Set uid to user 0
+2021-01-16 12:54:58,191 INFO supervisord started with pid 7
+2021-01-16 12:54:59,193 INFO spawned: 'set_dnsmasq_conf_by_env_tlds' with pid 10
+2021-01-16 12:54:59,194 INFO spawned: 'dnsmasq' with pid 11
+2021-01-16 12:54:59,196 INFO spawned: 'girouette' with pid 12
+2021-01-16 12:54:59,198 INFO success: set_dnsmasq_conf_by_env_tlds entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2021-01-16 12:54:59,198 INFO exited: set_dnsmasq_conf_by_env_tlds (exit status 0; expected)
+2021-01-16 12:55:01,008 INFO success: dnsmasq entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-16 12:55:01,008 INFO success: girouette entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-16 13:50:33,153 CRIT Set uid to user 0
+2021-01-16 13:50:33,155 INFO supervisord started with pid 7
+2021-01-16 13:50:34,157 INFO spawned: 'set_dnsmasq_conf_by_env_tlds' with pid 10
+2021-01-16 13:50:34,159 INFO spawned: 'dnsmasq' with pid 11
+2021-01-16 13:50:34,160 INFO spawned: 'girouette' with pid 12
+2021-01-16 13:50:34,163 INFO success: set_dnsmasq_conf_by_env_tlds entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2021-01-16 13:50:34,163 INFO exited: set_dnsmasq_conf_by_env_tlds (exit status 0; expected)
+2021-01-16 13:50:35,862 INFO success: dnsmasq entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-16 13:50:35,862 INFO success: girouette entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-16 13:53:31,620 CRIT Set uid to user 0
+2021-01-16 13:53:31,623 INFO supervisord started with pid 7
+2021-01-16 13:53:32,625 INFO spawned: 'set_dnsmasq_conf_by_env_tlds' with pid 10
+2021-01-16 13:53:32,627 INFO spawned: 'dnsmasq' with pid 11
+2021-01-16 13:53:32,628 INFO spawned: 'girouette' with pid 12
+2021-01-16 13:53:32,631 INFO success: set_dnsmasq_conf_by_env_tlds entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2021-01-16 13:53:32,631 INFO exited: set_dnsmasq_conf_by_env_tlds (exit status 0; expected)
+2021-01-16 13:53:34,314 INFO success: dnsmasq entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-16 13:53:34,314 INFO success: girouette entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-16 13:55:58,159 CRIT Set uid to user 0
+2021-01-16 13:55:58,161 INFO supervisord started with pid 7
+2021-01-16 13:55:59,163 INFO spawned: 'set_dnsmasq_conf_by_env_tlds' with pid 10
+2021-01-16 13:55:59,164 INFO spawned: 'dnsmasq' with pid 11
+2021-01-16 13:55:59,166 INFO spawned: 'girouette' with pid 12
+2021-01-16 13:55:59,169 INFO success: set_dnsmasq_conf_by_env_tlds entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2021-01-16 13:55:59,169 INFO exited: set_dnsmasq_conf_by_env_tlds (exit status 0; expected)
+2021-01-16 13:56:00,863 INFO success: dnsmasq entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-16 13:56:00,864 INFO success: girouette entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-16 13:56:46,055 CRIT Set uid to user 0
+2021-01-16 13:56:46,056 INFO supervisord started with pid 7
+2021-01-16 13:56:47,061 INFO spawned: 'set_dnsmasq_conf_by_env_tlds' with pid 10
+2021-01-16 13:56:47,065 INFO spawned: 'dnsmasq' with pid 11
+2021-01-16 13:56:47,070 INFO spawned: 'girouette' with pid 12
+2021-01-16 13:56:47,081 INFO success: set_dnsmasq_conf_by_env_tlds entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2021-01-16 13:56:47,082 INFO exited: set_dnsmasq_conf_by_env_tlds (exit status 0; expected)
+2021-01-16 13:56:48,723 INFO success: dnsmasq entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-16 13:56:48,723 INFO success: girouette entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-16 13:57:57,259 CRIT Set uid to user 0
+2021-01-16 13:57:57,260 INFO supervisord started with pid 7
+2021-01-16 13:57:58,263 INFO spawned: 'set_dnsmasq_conf_by_env_tlds' with pid 10
+2021-01-16 13:57:58,265 INFO spawned: 'dnsmasq' with pid 11
+2021-01-16 13:57:58,266 INFO spawned: 'girouette' with pid 12
+2021-01-16 13:57:58,268 INFO success: set_dnsmasq_conf_by_env_tlds entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2021-01-16 13:57:58,269 INFO exited: set_dnsmasq_conf_by_env_tlds (exit status 0; expected)
+2021-01-16 13:57:59,968 INFO success: dnsmasq entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-16 13:57:59,968 INFO success: girouette entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-16 14:11:18,157 CRIT Set uid to user 0
+2021-01-16 14:11:18,159 INFO supervisord started with pid 7
+2021-01-16 14:11:19,161 INFO spawned: 'set_dnsmasq_conf_by_env_tlds' with pid 10
+2021-01-16 14:11:19,162 INFO spawned: 'dnsmasq' with pid 11
+2021-01-16 14:11:19,163 INFO spawned: 'girouette' with pid 12
+2021-01-16 14:11:19,166 INFO success: set_dnsmasq_conf_by_env_tlds entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2021-01-16 14:11:19,166 INFO exited: set_dnsmasq_conf_by_env_tlds (exit status 0; expected)
+2021-01-16 14:11:20,856 INFO success: dnsmasq entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-16 14:11:20,856 INFO success: girouette entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-16 17:52:00,863 CRIT Set uid to user 0
+2021-01-16 17:52:00,867 INFO supervisord started with pid 7
+2021-01-16 17:52:01,869 INFO spawned: 'set_dnsmasq_conf_by_env_tlds' with pid 10
+2021-01-16 17:52:01,870 INFO spawned: 'dnsmasq' with pid 11
+2021-01-16 17:52:01,872 INFO spawned: 'girouette' with pid 12
+2021-01-16 17:52:01,876 INFO success: set_dnsmasq_conf_by_env_tlds entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2021-01-16 17:52:01,877 INFO exited: set_dnsmasq_conf_by_env_tlds (exit status 0; expected)
+2021-01-16 17:52:03,626 INFO success: dnsmasq entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-16 17:52:03,626 INFO success: girouette entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-16 21:46:23,626 CRIT Set uid to user 0
+2021-01-16 21:46:23,627 INFO supervisord started with pid 7
+2021-01-16 21:46:24,632 INFO spawned: 'set_dnsmasq_conf_by_env_tlds' with pid 10
+2021-01-16 21:46:24,635 INFO spawned: 'dnsmasq' with pid 11
+2021-01-16 21:46:24,636 INFO spawned: 'girouette' with pid 12
+2021-01-16 21:46:24,639 INFO success: set_dnsmasq_conf_by_env_tlds entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2021-01-16 21:46:24,639 INFO exited: set_dnsmasq_conf_by_env_tlds (exit status 0; expected)
+2021-01-16 21:46:26,300 INFO success: dnsmasq entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-16 21:46:26,300 INFO success: girouette entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-17 08:16:46,110 CRIT Set uid to user 0
+2021-01-17 08:16:46,113 INFO supervisord started with pid 7
+2021-01-17 08:16:47,115 INFO spawned: 'set_dnsmasq_conf_by_env_tlds' with pid 10
+2021-01-17 08:16:47,116 INFO spawned: 'dnsmasq' with pid 11
+2021-01-17 08:16:47,118 INFO spawned: 'girouette' with pid 12
+2021-01-17 08:16:47,123 INFO success: set_dnsmasq_conf_by_env_tlds entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2021-01-17 08:16:47,123 INFO exited: set_dnsmasq_conf_by_env_tlds (exit status 0; expected)
+2021-01-17 08:16:48,893 INFO success: dnsmasq entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-17 08:16:48,893 INFO success: girouette entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-17 08:41:09,655 CRIT Set uid to user 0
+2021-01-17 08:41:09,657 INFO supervisord started with pid 7
+2021-01-17 08:41:10,659 INFO spawned: 'set_dnsmasq_conf_by_env_tlds' with pid 10
+2021-01-17 08:41:10,660 INFO spawned: 'dnsmasq' with pid 11
+2021-01-17 08:41:10,661 INFO spawned: 'girouette' with pid 12
+2021-01-17 08:41:10,665 INFO success: set_dnsmasq_conf_by_env_tlds entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2021-01-17 08:41:10,666 INFO exited: set_dnsmasq_conf_by_env_tlds (exit status 0; expected)
+2021-01-17 08:41:12,372 INFO success: dnsmasq entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-17 08:41:12,372 INFO success: girouette entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-17 08:41:46,870 CRIT Set uid to user 0
+2021-01-17 08:41:46,871 INFO supervisord started with pid 7
+2021-01-17 08:41:47,873 INFO spawned: 'set_dnsmasq_conf_by_env_tlds' with pid 10
+2021-01-17 08:41:47,875 INFO spawned: 'dnsmasq' with pid 11
+2021-01-17 08:41:47,876 INFO spawned: 'girouette' with pid 12
+2021-01-17 08:41:47,879 INFO success: set_dnsmasq_conf_by_env_tlds entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2021-01-17 08:41:47,879 INFO exited: set_dnsmasq_conf_by_env_tlds (exit status 0; expected)
+2021-01-17 08:41:49,576 INFO success: dnsmasq entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-17 08:41:49,576 INFO success: girouette entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-18 17:45:22,189 CRIT Set uid to user 0
+2021-01-18 17:45:22,192 INFO supervisord started with pid 7
+2021-01-18 17:45:23,195 INFO spawned: 'set_dnsmasq_conf_by_env_tlds' with pid 10
+2021-01-18 17:45:23,196 INFO spawned: 'dnsmasq' with pid 11
+2021-01-18 17:45:23,198 INFO spawned: 'girouette' with pid 12
+2021-01-18 17:45:23,205 INFO success: set_dnsmasq_conf_by_env_tlds entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2021-01-18 17:45:23,205 INFO exited: set_dnsmasq_conf_by_env_tlds (exit status 0; expected)
+2021-01-18 17:45:24,991 INFO success: dnsmasq entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-01-18 17:45:24,991 INFO success: girouette entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
