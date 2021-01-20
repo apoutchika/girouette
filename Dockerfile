@@ -9,6 +9,7 @@ RUN rm -rf /var/lib/apt/lists/*
 
 RUN echo "conf-dir=/etc/dnsmasq.d" >> /etc/dnsmasq.conf
 RUN echo "user=root" >> /etc/dnsmasq.conf
+RUN echo "cache-size=10000" >> /etc/dnsmasq.conf
 
 COPY ./app /app
 COPY ./front /front
