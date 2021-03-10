@@ -130,8 +130,8 @@ docker run \
   -d \
   -p 80:80 \
   -p 443:443 \
-  -p 53:5353 \
-  -p 53:5353/udp \
+  -p 127.0.0.1:53:5353 \
+  -p 127.0.0.1:53:5353/udp \
   --network girouette \
   -e TLDS=${TLDS} \
   -v "girouette:/data" \
