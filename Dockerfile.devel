@@ -19,6 +19,7 @@ RUN mkdir -p /app
 WORKDIR /app
 
 COPY ./supervisor.conf /supervisor.conf
+RUN sed -i "s/node /nodemon /" /supervisor.conf 
 
 EXPOSE 80 8080 443 5353
 CMD supervisord -c /supervisor.conf
