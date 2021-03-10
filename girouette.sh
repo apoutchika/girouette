@@ -108,8 +108,8 @@ inquirer.prompt([
   answers.tlds = answers.tlds.split(',').map(tld => tld.replace(/^\\\\./, '')).join(',')
 
   fs.writeFileSync('/app/tld', answers.tlds.split(',')[0])
-  fs.writeFileSync('/app/dnsmasq', answers.tlds.split(',').join('\\\\n'))
-  fs.writeFileSync('/app/tlds', answers.tlds.split(',').map(tld => 'address=/.' + tld + '/127.0.0.1').join('\\\\n'))
+  fs.writeFileSync('/app/tlds', answers.tlds.split(',').join('\\\\n'))
+  fs.writeFileSync('/app/dnsmasq', answers.tlds.split(',').map(tld => 'address=/.' + tld + '/127.0.0.1').join('\\\\n'))
   fs.writeFileSync('/app/dns', answers.dns)
 })
 EOF
