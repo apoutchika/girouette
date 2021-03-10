@@ -5,14 +5,13 @@ import SVG from "./components/SVG";
 import Project from "./components/Project";
 import Favorites from "./components/Favorites";
 import PopinCertificate from "./components/PopinCertificate";
-import config from "./config";
 
 import Logo from "./assets/svgs/logo.svg";
 import "./assets/sass/main.scss";
 
 const ENDPOINT = `http${
   window.location.protocol === "https:" ? "s" : ""
-}://girouette.${config.tld}`;
+}://girouette.devel`;
 
 class App extends React.Component {
   constructor(props) {

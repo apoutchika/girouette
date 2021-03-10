@@ -24,6 +24,16 @@ app.get('/certificate', (req, res) => {
   res.send(Buffer.from(rootCA.crt))
 })
 
+app.get('/config', (req, res) => {
+  const { DNS, TLD, TLDS, DNSMASQ } = process.env
+  res.json({
+    dns: DNS,
+    tld: TLD,
+    tlds: TLDS,
+    dnsmasq: DNSMASQ
+  })
+})
+
 if (process.env.NODE_ENV !== 'development') {
   app.use('/', serveStatic('/front/build/', { index: ['index.html'] }))
 } else {

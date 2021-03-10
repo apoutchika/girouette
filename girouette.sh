@@ -108,6 +108,7 @@ inquirer.prompt([
   answers.tlds = answers.tlds.split(',').map(tld => tld.replace(/^\\\\./, '')).join(',')
 
   fs.writeFileSync('/app/tld', answers.tlds.split(',')[0])
+  fs.writeFileSync('/app/dnsmasq', answers.tlds.split(',').join('\\\\n'))
   fs.writeFileSync('/app/tlds', answers.tlds.split(',').map(tld => 'address=/.' + tld + '/127.0.0.1').join('\\\\n'))
   fs.writeFileSync('/app/dns', answers.dns)
 })
@@ -117,6 +118,7 @@ EOF
 run_node "cd /app && npm install inquirer && node -e \"${CONFIGURE}\""
 
 
+DNSMASQ=$(run_node "cat /app/dnsmasq")
 TLDS=$(run_node "cat /app/tlds")
 TLD=$(run_node "cat /app/tld")
 DNS=$(run_node "cat /app/dns")
@@ -133,7 +135,10 @@ docker run \
   -p 127.0.0.1:53:5353 \
   -p 127.0.0.1:53:5353/udp \
   --network girouette \
+  -e DNS=${DNS} \
+  -e TLD=${TLD} \
   -e TLDS=${TLDS} \
+  -e DNSMASQ=${DNSMASQ} \
   -v "girouette:/data" \
   -v "/var/run/docker.sock:/var/run/docker.sock" \
   --label girouette.domains="girouette.${TLD}:8080" \

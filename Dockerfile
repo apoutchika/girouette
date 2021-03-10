@@ -15,6 +15,7 @@ COPY ./app /app
 COPY ./front /front
 COPY ./supervisor.conf /supervisor.conf
 
+
 RUN cd /app && npm i
 RUN cd /front && npm i && npm run build
 
