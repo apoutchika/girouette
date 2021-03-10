@@ -2,3 +2,5 @@ app/node_modules
 front/node_modules
 data
 app/supervisord.log
+app/supervisord.log
+app/supervisord.pid
