@@ -1,16 +1,16 @@
-import React from "react";
-import socketIOClient from "socket.io-client";
-import Switch from "react-switch";
-import SVG from "./components/SVG";
-import Project from "./components/Project";
-import Favorites from "./components/Favorites";
-import PopinCertificate from "./components/PopinCertificate";
+import React from 'react';
+import socketIOClient from 'socket.io-client';
+import Switch from 'react-switch';
+import SVG from './components/SVG';
+import Project from './components/Project';
+import Favorites from './components/Favorites';
+import PopinCertificate from './components/PopinCertificate';
 
-import Logo from "./assets/svgs/logo.svg";
-import "./assets/sass/main.scss";
+import Logo from './assets/svgs/logo.svg';
+import './assets/sass/main.scss';
 
 const ENDPOINT = `http${
-  window.location.protocol === "https:" ? "s" : ""
+  window.location.protocol === 'https:' ? 's' : ''
 }://girouette.devel`;
 
 class App extends React.Component {
@@ -22,13 +22,13 @@ class App extends React.Component {
       domains: [],
       favorites: [],
       socket: null,
-      scheme: "https",
+      scheme: 'https',
       certifPopin: false,
-      sidebar: localStorage.getItem("girouetteSidebar")
-        ? JSON.parse(localStorage.getItem("girouetteSidebar"))
+      sidebar: localStorage.getItem('girouetteSidebar')
+        ? JSON.parse(localStorage.getItem('girouetteSidebar'))
         : false,
-      sidebarLeft: localStorage.getItem("girouetteSidebarLeft")
-        ? JSON.parse(localStorage.getItem("girouetteSidebarLeft"))
+      sidebarLeft: localStorage.getItem('girouetteSidebarLeft')
+        ? JSON.parse(localStorage.getItem('girouetteSidebarLeft'))
         : true,
     };
 
@@ -42,23 +42,23 @@ class App extends React.Component {
   componentDidMount() {
     this.getFavorites();
 
-    const scheme = window.localStorage.getItem("scheme");
+    const scheme = window.localStorage.getItem('scheme');
     if (scheme) {
       this.setState({ scheme });
     }
 
     const socket = socketIOClient(ENDPOINT, {
-      path: "/girouettedockerdata",
+      path: '/girouettedockerdata',
       withCredentials: true,
     });
 
     this.setState({ socket });
 
-    socket.on("disconnect", () => {
+    socket.on('disconnect', () => {
       this.setState({ domainsByGroup: {}, domains: [] });
     });
 
-    socket.on("domains", (domains) => {
+    socket.on('domains', (domains) => {
       this.setState({ domains: Object.keys(domains) });
       const domainsByGroup = Object.keys(domains).reduce((acc, domain) => {
         const { project } = domains[domain];
@@ -73,8 +73,8 @@ class App extends React.Component {
 
   getFavorites() {
     try {
-      if (window.localStorage.getItem("favorites")) {
-        const favorites = JSON.parse(window.localStorage.getItem("favorites"));
+      if (window.localStorage.getItem('favorites')) {
+        const favorites = JSON.parse(window.localStorage.getItem('favorites'));
         this.setState({ favorites });
       }
     } catch (e) {
@@ -84,8 +84,8 @@ class App extends React.Component {
 
   saveFavorites() {
     window.localStorage.setItem(
-      "favorites",
-      JSON.stringify(this.state.favorites)
+      'favorites',
+      JSON.stringify(this.state.favorites),
     );
   }
 
@@ -98,7 +98,7 @@ class App extends React.Component {
           {
             favorites: this.state.favorites.filter((fav) => fav !== domain),
           },
-          this.saveFavorites
+          this.saveFavorites,
         );
       }
 
@@ -106,7 +106,7 @@ class App extends React.Component {
         {
           favorites: [...this.state.favorites, domain],
         },
-        this.saveFavorites
+        this.saveFavorites,
       );
     };
   }
@@ -118,14 +118,14 @@ class App extends React.Component {
   }
 
   toggleSidebar() {
-    localStorage.setItem("girouetteSidebar", !this.state.sidebar);
+    localStorage.setItem('girouetteSidebar', !this.state.sidebar);
     this.setState({
       sidebar: !this.state.sidebar,
     });
   }
 
   toggleSidebarDirection() {
-    localStorage.setItem("girouetteSidebarLeft", !this.state.sidebarLeft);
+    localStorage.setItem('girouetteSidebarLeft', !this.state.sidebarLeft);
     this.setState({
       sidebarLeft: !this.state.sidebarLeft,
     });
@@ -145,8 +145,8 @@ class App extends React.Component {
 
     return (
       <div
-        className={`content ${sidebar && "with-sidebar"} ${
-          !sidebarLeft && "with-sidebar--right"
+        className={`content ${sidebar && 'with-sidebar'} ${
+          !sidebarLeft && 'with-sidebar--right'
         }`}
       >
         <header className="header">
@@ -172,36 +172,32 @@ class App extends React.Component {
               className="https-switch"
               offColor="#7d898d"
               onColor="#0075ff"
-              onChange={() =>
-                this.setState(
-                  {
-                    scheme: scheme === "http" ? "https" : "http",
-                  },
-                  () => {
-                    window.localStorage.setItem("scheme", this.state.scheme);
-                  }
-                )
-              }
-              checked={scheme === "https"}
+              onChange={() => this.setState(
+                {
+                  scheme: scheme === 'http' ? 'https' : 'http',
+                },
+                () => {
+                  window.localStorage.setItem('scheme', this.state.scheme);
+                },
+              )}
+              checked={scheme === 'https'}
             />
           </div>
 
           <ul className="projects-list wrapper">
             {Object.keys(domainsByGroup)
               .sort()
-              .map((group) => {
-                return (
-                  <Project
-                    key={group}
-                    group={group}
-                    socket={socket}
-                    domains={domainsByGroup[group].sort()}
-                    scheme={scheme}
-                    favorites={favorites}
-                    switchFavorite={this.switchFavorite}
-                  />
-                );
-              })}
+              .map((group) => (
+                <Project
+                  key={group}
+                  group={group}
+                  socket={socket}
+                  domains={domainsByGroup[group].sort()}
+                  scheme={scheme}
+                  favorites={favorites}
+                  switchFavorite={this.switchFavorite}
+                />
+              ))}
           </ul>
         </section>
 

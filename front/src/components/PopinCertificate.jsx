@@ -1,37 +1,38 @@
-import React, { Fragment } from 'react'
-import SVG from './SVG'
+import React, { Fragment } from 'react';
+import SVG from './SVG';
 
 class PopinCertificate extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       copied: false,
-    }
+    };
   }
 
   clipboard(url) {
-    navigator.clipboard.writeText(url)
+    navigator.clipboard.writeText(url);
 
-    this.setState({ copied: true })
+    this.setState({ copied: true });
 
     setTimeout(() => {
-      this.setState({ copied: false })
-    }, 5000)
+      this.setState({ copied: false });
+    }, 5000);
   }
 
   render() {
-    const { active, toggleCertifPopin } = this.props
-    const { copied } = this.state
+    const { active, toggleCertifPopin } = this.props;
+    const { copied } = this.state;
 
     return (
-      <Fragment>
+      <>
         <div className={`certif-popin ${active && 'is-active'}`}>
           <div className="certif-popin__container">
             <div className="certif-popin__header">
               <h2 className="certif-popin__title">Certificate</h2>
 
               <button
+                type="button"
                 onClick={toggleCertifPopin}
                 className="certif-popin__close"
               >
@@ -68,9 +69,9 @@ class PopinCertificate extends React.Component {
         </div>
 
         {copied && <div className="toast">Copied to clipboard</div>}
-      </Fragment>
-    )
+      </>
+    );
   }
 }
 
-export default PopinCertificate
+export default PopinCertificate;
