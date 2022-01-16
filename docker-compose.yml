@@ -30,7 +30,7 @@ services:
 
   www:
     tty: true
-    image: node:latest
+    image: node:16
     command: sh -c "cd /app && CHOKIDAR_USEPOLLING=true npm run start"
     restart: always
     working_dir: /app
