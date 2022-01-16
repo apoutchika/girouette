@@ -35,7 +35,7 @@ echo -e "\e[34m> Test if has docker\e[39m\n"
 
 docker volume create girouette_install
 function run_node () {
-  docker run --rm -ti --network="host" -v "girouette_install:/app" node:latest bash -c "${1}"
+  docker run --rm -ti --network="host" -v "girouette_install:/app" node:16 bash -c "${1}"
 }
 
 echo ""
@@ -52,24 +52,28 @@ echo -e "\e[34m> Clean old Girouette install...\e[39m"
 echo ""
 echo -e "\e[34m> Test port configuration\e[39m\n"
 
+PACKAGE='{"type": "module", "dependencies": {"chalk": "^5.0.0", "inquirer": "^8.2.0", "is-port-reachable": "^4.0.0"}}'
+run_node "cd /app && echo '${PACKAGE}' > package.json && cat package.json && npm i"
+
+
 TEST_CONFIG=$(cat <<EOF
-const isPortReachable = require('is-port-reachable');
-const fs = require('fs')
-const chalk = require('chalk')
+import isPortReachable from 'is-port-reachable';
+import fs from 'fs';
+import chalk from 'chalk';
 
 const test = async port => {
   if(await isPortReachable(port, {host: 'localhost'})) {
-    console.log(chalk.red('> Girouette use port ' + port + ', and it not free'))
-    fs.writeFileSync('/app/fail', 'FAIL')
+    console.log(chalk.red('> Girouette use port ' + port + ', and it not free'));
+    fs.writeFileSync('/app/fail', 'FAIL');
   }
 }
 
-test(80)
-test(443)
-test(53)
+test(80);
+test(443);
+test(53);
 EOF
 )
-run_node "cd /app && npm install is-port-reachable chalk && node -e \"${TEST_CONFIG}\""
+run_node "cd /app && cat package.json && node --input-type=module -e \"${TEST_CONFIG}\""
 
 FAIL=$(run_node "cat /app/fail")
 if [[ ${FAIL} == 'FAIL' ]];
@@ -84,10 +88,9 @@ echo ""
 
 
 
-
 CONFIGURE=$(cat <<EOF
-const fs = require('fs')
-const inquirer = require('inquirer')
+import fs from 'fs';
+import inquirer from 'inquirer';
 
 inquirer.prompt([
 {
@@ -103,19 +106,18 @@ inquirer.prompt([
   default: () => '1.1.1.1'
 }
 ]).then(answers => {
-  console.log('') // space
+  console.log(''); // space
 
-  answers.tlds = answers.tlds.split(',').map(tld => tld.replace(/^\\\\./, '')).join(',')
+  answers.tlds = answers.tlds.split(',').map(tld => tld.replace(/^\\\\./, '')).join(',');
 
-  fs.writeFileSync('/app/tld', answers.tlds.split(',')[0])
-  fs.writeFileSync('/app/tlds', answers.tlds.split(',').join('\\\\n'))
-  fs.writeFileSync('/app/dnsmasq', answers.tlds.split(',').map(tld => 'address=/.' + tld + '/127.0.0.1').join('\\\\n'))
-  fs.writeFileSync('/app/dns', answers.dns)
+  fs.writeFileSync('/app/tld', answers.tlds.split(',')[0]);
+  fs.writeFileSync('/app/tlds', answers.tlds.split(',').join('\\\\n'));
+  fs.writeFileSync('/app/dnsmasq', answers.tlds.split(',').map(tld => 'address=/.' + tld + '/127.0.0.1').join('\\\\n'));
+  fs.writeFileSync('/app/dns', answers.dns);
 })
 EOF
 )
-
-run_node "cd /app && npm install inquirer && node -e \"${CONFIGURE}\""
+run_node "cd /app && node --input-type=module -e \"${CONFIGURE}\""
 
 
 DNSMASQ=$(run_node "cat /app/dnsmasq")
