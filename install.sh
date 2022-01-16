@@ -4,7 +4,7 @@ docker run \
   -ti \
   -e NODE_ENV=development \
   -v "$(pwd):/app" \
-  node:latest \
+  node:16 \
   sh -c "cd /app/app && npm i && cd /app/front && npm i"
 
 NETWORK_GIROUETTE=$(docker network ls --format "{{.Name}}" | grep '^girouette$' | wc -l)
