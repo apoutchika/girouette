@@ -1,26 +1,27 @@
-const Docker = require('dockerode');
+const Docker = require("dockerode");
 
-const Promise = require('bluebird');
+const Promise = require("bluebird");
 
 const docker = Promise.promisifyAll(
-  new Docker({ socketPath: '/var/run/docker.sock' }),
+  new Docker({ socketPath: "/var/run/docker.sock" })
 );
-const get = require('lodash/get');
-const cache = require('./proxyCache');
-const dialog = require('./dialog');
-const labelToHosts = require('./labelToHosts');
+const get = require("lodash/get");
+const cache = require("./proxyCache");
+const dialog = require("./dialog");
+const labelToHosts = require("./labelToHosts");
 
 const actives = new Map();
 
-const getContainer = (id) => new Promise((resolve, reject) => {
-  docker.getContainer(id).inspect((err, container) => {
-    if (err) {
-      return reject(err);
-    }
+const getContainer = (id) =>
+  new Promise((resolve, reject) => {
+    docker.getContainer(id).inspect((err, container) => {
+      if (err) {
+        return reject(err);
+      }
 
-    return resolve(container);
+      return resolve(container);
+    });
   });
-});
 
 const add = async (id) => {
   const container = await getContainer(id).catch(console.error);
@@ -28,17 +29,17 @@ const add = async (id) => {
     return false;
   }
 
-  const hosts = labelToHosts(get(container, 'Config.Labels'));
+  const hosts = labelToHosts(get(container, "Config.Labels"));
   if (hosts.length === 0) {
     return false;
   }
 
-  const ip = get(container, 'NetworkSettings.Networks.girouette.IPAddress');
+  const ip = get(container, "NetworkSettings.Networks.girouette.IPAddress");
 
   // Add girouette network if not exists
   if (!ip) {
     return docker
-      .getNetwork('girouette')
+      .getNetwork("girouette")
       .connect({ Container: id }, (err, ok) => {
         if (err) {
           return console.error(err);
@@ -55,7 +56,7 @@ const add = async (id) => {
   });
 
   actives.set(container.Id, domains);
-  return dialog.emit('domains');
+  return dialog.emit("domains");
 };
 
 docker.listContainers((err, containers) => {
@@ -70,12 +71,12 @@ docker.listContainers((err, containers) => {
 
 const createEvent = (types, cb) => {
   docker.getEvents(
-    { filters: { type: ['container'], event: types } },
+    { filters: { type: ["container"], event: types } },
     (err, data) => {
       if (err) {
         return console.error(err);
       }
-      return data.on('data', (bufferData) => {
+      return data.on("data", (bufferData) => {
         try {
           const container = JSON.parse(bufferData.toString());
           cb(container.id);
@@ -83,21 +84,21 @@ const createEvent = (types, cb) => {
           console.error(containerErr);
         }
       });
-    },
+    }
   );
 };
 
-createEvent(['start'], (id) => add(id));
-createEvent(['stop', 'kill'], (id) => {
+createEvent(["start"], (id) => add(id));
+createEvent(["stop", "kill"], (id) => {
   if (actives.has(id)) {
     actives.get(id).map((domain) => cache.del(domain));
     actives.delete(id);
-    return dialog.emit('domains');
+    return dialog.emit("domains");
   }
   return false;
 });
 
-dialog.on('stop', (project) => {
+dialog.on("stop", (project) => {
   docker.listContainers((err, containers) => {
     if (err) {
       console.error(err);
@@ -105,7 +106,7 @@ dialog.on('stop', (project) => {
 
     return containers.forEach((container) => {
       if (
-        get(container, ['Labels', 'com.docker.compose.project']) === project
+        get(container, ["Labels", "com.docker.compose.project"]) === project
       ) {
         docker.getContainer(container.Id).stop();
       }

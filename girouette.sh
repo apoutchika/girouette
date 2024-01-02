@@ -53,7 +53,7 @@ echo ""
 echo -e "\e[34m> Test port configuration\e[39m\n"
 
 PACKAGE='{"type": "module", "dependencies": {"chalk": "5.3.0", "inquirer": "9.2.12", "is-port-reachable": "4.0.0"}}'
-run_node "cd /app && echo '${PACKAGE}' > package.json && npm i -s"
+run_node "cd /app && echo '${PACKAGE}' > package.json && npm config set update-notifier false && npm i -s"
 
 
 TEST_CONFIG=$(cat <<EOF

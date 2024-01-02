@@ -1,5 +1,5 @@
-const forge = require('node-forge');
-const getSerialNumber = require('./generateSerialNumber');
+const forge = require("node-forge");
+const getSerialNumber = require("./generateSerialNumber");
 
 module.exports = () => {
   const { privateKey, publicKey } = forge.pki.rsa.generateKeyPair(2048);
@@ -12,19 +12,19 @@ module.exports = () => {
   cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 1);
 
   const attrs = [
-    { name: 'organizationName', value: 'Girouette' },
-    { name: 'commonName', value: 'Girouette Authority' },
+    { name: "organizationName", value: "Girouette" },
+    { name: "commonName", value: "Girouette Authority" },
   ];
 
   cert.setSubject(attrs);
   cert.setIssuer(attrs);
   cert.setExtensions([
     {
-      name: 'basicConstraints',
+      name: "basicConstraints",
       cA: true,
     },
     {
-      name: 'keyUsage',
+      name: "keyUsage",
       keyCertSign: true,
       digitalSignature: true,
       nonRepudiation: true,
@@ -32,11 +32,11 @@ module.exports = () => {
       dataEncipherment: true,
     },
     {
-      name: 'subjectAltName',
+      name: "subjectAltName",
       altNames: [
         {
           type: 2,
-          value: 'girouette.devel',
+          value: "girouette.devel",
         },
       ],
     },

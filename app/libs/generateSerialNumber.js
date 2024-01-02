@@ -1,4 +1,4 @@
-const forge = require('node-forge');
+const forge = require("node-forge");
 
 module.exports = () => {
   const hexString = forge.util.bytesToHex(forge.random.getBytesSync(9));

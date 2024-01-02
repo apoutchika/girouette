@@ -1,17 +1,17 @@
-const EventEmitter = require('events');
+const EventEmitter = require("events");
 
-const cache = require('./proxyCache');
+const cache = require("./proxyCache");
 
 const dialog = new EventEmitter();
 let io;
 
-dialog.on('io', (newIo) => {
+dialog.on("io", (newIo) => {
   io = newIo;
 });
 
-dialog.on('domains', () => {
+dialog.on("domains", () => {
   if (io) {
-    io.emit('domains', cache.all());
+    io.emit("domains", cache.all());
   }
 });
 

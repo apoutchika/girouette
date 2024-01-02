@@ -1,21 +1,21 @@
-const dialog = require('./libs/dialog');
-const proxyCache = require('./libs/proxyCache');
+const dialog = require("./libs/dialog");
+const proxyCache = require("./libs/proxyCache");
 
 module.exports = (io) => {
-  dialog.emit('io', io);
-  io.on('connection', (socket) => {
-    socket.emit('domains', proxyCache.all());
+  dialog.emit("io", io);
+  io.on("connection", (socket) => {
+    socket.emit("domains", proxyCache.all());
 
-    socket.on('stop', (domain) => {
-      dialog.emit('stop', domain);
+    socket.on("stop", (domain) => {
+      dialog.emit("stop", domain);
     });
 
-    socket.on('prune', () => {
-      dialog.emit('prune', (err, containers, images) => {
+    socket.on("prune", () => {
+      dialog.emit("prune", (err, containers, images) => {
         if (err) {
           console.error(err);
         }
-        socket.emit('prune', {
+        socket.emit("prune", {
           containers: {
             nb: !containers.ContainersDeleted
               ? 0
