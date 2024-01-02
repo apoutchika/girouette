@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import copy from 'copy-to-clipboard';
+import copy from "copy-to-clipboard";
+import { useState } from "react";
 
-import SVG from './SVG';
+import SVG from "./SVG";
 
 type Props = {
   active: boolean;
@@ -22,7 +22,7 @@ function PopinCertificate({ active, toggleCertifPopin, endpoint }: Props) {
 
   return (
     <>
-      <div className={`certif-popin ${active && 'is-active'}`}>
+      <div className={`certif-popin ${active && "is-active"}`}>
         <div className="certif-popin__container">
           <div className="certif-popin__header">
             <h2 className="certif-popin__title">Certificate</h2>
@@ -39,7 +39,7 @@ function PopinCertificate({ active, toggleCertifPopin, endpoint }: Props) {
           <div className="text-center">
             <a
               className="certif-popin__download btn btn--secondary"
-              href={new URL('/certificate', endpoint).href}
+              href={new URL("/certificate", endpoint).href}
             >
               <SVG icon="download" extraClass="small-icon" />
               Download
@@ -48,7 +48,7 @@ function PopinCertificate({ active, toggleCertifPopin, endpoint }: Props) {
 
           <button
             type="button"
-            onClick={() => clipboard('chrome://settings/certificates')}
+            onClick={() => clipboard("chrome://settings/certificates")}
             className="label label--chrome"
           >
             <SVG icon="chrome" extraClass="small-icon" />
@@ -57,7 +57,7 @@ function PopinCertificate({ active, toggleCertifPopin, endpoint }: Props) {
 
           <button
             type="button"
-            onClick={() => clipboard('about:preferences#privacy')}
+            onClick={() => clipboard("about:preferences#privacy")}
             className="label label--firefox"
           >
             <SVG icon="firefox" extraClass="small-icon" />

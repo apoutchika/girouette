@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import SVG from './SVG';
+import { useState } from "react";
+import SVG from "./SVG";
 
 type Props = {
   socket: any;
   group: string;
   domains: string[];
-  scheme: 'http' | 'https';
+  scheme: "http" | "https";
   favorites: string[];
   switchFavorite: (domain: string) => any;
 };
@@ -22,22 +22,22 @@ function Project({
 
   const stop = () => {
     if (window.confirm(`Stop ${group} ?`)) {
-      socket.emit('stop', group);
+      socket.emit("stop", group);
       setOff(true);
     }
   };
 
   return (
     <li
-      className={`project-card ${off && 'is-stop'} ${
-        group === 'Girouette' && 'is-girouette'
+      className={`project-card ${off && "is-stop"} ${
+        group === "Girouette" && "is-girouette"
       }`}
       key={`${group}`}
     >
       <div className="project-card__header">
         <h2 className="project-card__title">{group}</h2>
 
-        {group !== 'Girouette' && (
+        {group !== "Girouette" && (
           <button type="button" className="project-card__power" onClick={stop}>
             <SVG icon="power" />
           </button>
@@ -61,7 +61,7 @@ function Project({
               className="project-card__favorite"
               onClick={switchFavorite(domain)}
             >
-              <SVG icon={favorites.includes(domain) ? 'star' : 'star-o'} />
+              <SVG icon={favorites.includes(domain) ? "star" : "star-o"} />
             </button>
           </li>
         ))}

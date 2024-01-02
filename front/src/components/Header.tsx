@@ -1,4 +1,4 @@
-import SVG from './SVG';
+import SVG from "./SVG";
 
 type Props = {
   toggleCertifPopin: () => any;

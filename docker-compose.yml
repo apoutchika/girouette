@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   girouette:
@@ -18,15 +18,15 @@ services:
       - girouette
     environment:
       NODE_ENV: development
-      TLDS: '.devel'
-      DNSMASQ: 'address=/.devel/127.0.0.1'
-      TLD: '.devel'
-      DNS: '1.1.1.1'
+      TLDS: ".devel"
+      DNSMASQ: "address=/.devel/127.0.0.1"
+      TLD: ".devel"
+      DNS: "1.1.1.1"
     volumes:
-      - './app:/app'
-      - './front:/front'
-      - 'girouette:/data'
-      - '/var/run/docker.sock:/var/run/docker.sock'
+      - "./app:/app"
+      - "./front:/front"
+      - "girouette:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
     labels:
       girouette.domains: girouette.devel:8080
       girouette.group: Girouette
@@ -34,11 +34,11 @@ services:
   www:
     tty: true
     image: node:16
-    command: sh -c "cd /app && CHOKIDAR_USEPOLLING=true npm run start"
+    command: sh -c "cd /app && npm run dev"
     restart: always
     working_dir: /app
     volumes:
-      - './front:/app'
+      - "./front:/app"
     environment:
       NODE_ENV: development
       HOST: 0.0.0.0
@@ -46,7 +46,7 @@ services:
     networks:
       - girouette
     labels:
-      traefik.frontend.rule: 'Host:girouettedev.devel'
+      traefik.frontend.rule: "Host:girouettedev.devel"
       traefik.port: 3000
       girouette.group: Girouette
 

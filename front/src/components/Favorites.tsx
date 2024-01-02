@@ -1,9 +1,9 @@
-import SVG from './SVG';
+import SVG from "./SVG";
 
 type Props = {
   favorites: string[];
   domains: string[];
-  scheme: 'http' | 'https';
+  scheme: "http" | "https";
   toggleSidebar: () => any;
   toggleSidebarDirection: () => any;
   sidebarLeft: boolean;
@@ -21,8 +21,8 @@ function Favorites({
 }: Props) {
   return (
     <div
-      className={`favorites ${active && 'is-active'} ${
-        !sidebarLeft && 'favorites--right'
+      className={`favorites ${active && "is-active"} ${
+        !sidebarLeft && "favorites--right"
       }`}
     >
       <button

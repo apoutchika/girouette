@@ -1,32 +1,33 @@
-import { useCallback, useEffect, useState } from 'react';
-import socketIOClient from 'socket.io-client';
-import Switch from 'react-switch';
-import Project from './components/Project';
-import Favorites from './components/Favorites';
-import PopinCertificate from './components/PopinCertificate';
-import Footer from './components/Footer';
+import { useCallback, useEffect, useState } from "react";
+import Switch from "react-switch";
+import socketIOClient from "socket.io-client";
+import Favorites from "./components/Favorites";
+import Footer from "./components/Footer";
+import PopinCertificate from "./components/PopinCertificate";
+import Project from "./components/Project";
 
-import './assets/sass/main.scss';
-import Header from './components/Header';
+import "./assets/sass/main.scss";
+import Header from "./components/Header";
 
 const ENDPOINT = `http${
-  window.location.protocol === 'https:' ? 's' : ''
+  window.location.protocol === "https:" ? "s" : ""
 }://girouette.devel`;
 
 const socket = socketIOClient(ENDPOINT, {
-  path: '/girouettedockerdata',
+  path: "/girouettedockerdata",
   withCredentials: true,
 });
 
-const configFromLocalStorage = localStorage.getItem('config');
-const defaultConfig = configFromLocalStorage !== null
-  ? JSON.parse(configFromLocalStorage)
-  : {
-    favorites: [],
-    scheme: 'https',
-    sidebar: false,
-    sidebarLeft: true,
-  };
+const configFromLocalStorage = localStorage.getItem("config");
+const defaultConfig =
+  configFromLocalStorage !== null
+    ? JSON.parse(configFromLocalStorage)
+    : {
+        favorites: [],
+        scheme: "https",
+        sidebar: false,
+        sidebarLeft: true,
+      };
 
 type DomainsByGroup = {
   [index: string]: string[];
@@ -39,7 +40,7 @@ type DomainsSocketResponse = {
 
 type Config = {
   favorites: string[];
-  scheme: 'http' | 'https';
+  scheme: "http" | "https";
   sidebar: boolean;
   sidebarLeft: boolean;
 };
@@ -51,12 +52,10 @@ function App() {
 
   const [config, setConfig] = useState<Config>(defaultConfig);
 
-  const {
-    favorites, scheme, sidebar, sidebarLeft,
-  } = config;
+  const { favorites, scheme, sidebar, sidebarLeft } = config;
 
   useEffect(() => {
-    window.localStorage.setItem('config', JSON.stringify(config));
+    window.localStorage.setItem("config", JSON.stringify(config));
   }, [config]);
 
   const socketOnDisconnect = useCallback(() => {
@@ -72,17 +71,17 @@ function App() {
         acc[project] = acc[project] || [];
         acc[project].push(domain);
         return acc;
-      }, {}),
+      }, {})
     );
   }, []);
 
   useEffect(() => {
-    socket.on('disconnect', socketOnDisconnect);
-    socket.on('domains', socketOnDomains);
+    socket.on("disconnect", socketOnDisconnect);
+    socket.on("domains", socketOnDomains);
 
     return () => {
-      socket.off('disconnect', socketOnDisconnect);
-      socket.off('domains', socketOnDomains);
+      socket.off("disconnect", socketOnDisconnect);
+      socket.off("domains", socketOnDomains);
     };
   }, [socketOnDomains, socketOnDisconnect]);
 
@@ -102,8 +101,8 @@ function App() {
 
   return (
     <div
-      className={`content ${sidebar && 'with-sidebar'} ${
-        !sidebarLeft && 'with-sidebar--right'
+      className={`content ${sidebar && "with-sidebar"} ${
+        !sidebarLeft && "with-sidebar--right"
       }`}
     >
       <Header toggleCertifPopin={() => setCertifPopin(!certifPopin)} />
@@ -115,11 +114,13 @@ function App() {
             className="https-switch"
             offColor="#7d898d"
             onColor="#0075ff"
-            onChange={() => setConfig({
-              ...config,
-              scheme: scheme === 'http' ? 'https' : 'http',
-            })}
-            checked={scheme === 'https'}
+            onChange={() =>
+              setConfig({
+                ...config,
+                scheme: scheme === "http" ? "https" : "http",
+              })
+            }
+            checked={scheme === "https"}
           />
         </div>
 
@@ -153,7 +154,9 @@ function App() {
         domains={domains}
         scheme={scheme}
         toggleSidebar={() => setConfig({ ...config, sidebar: !sidebar })}
-        toggleSidebarDirection={() => setConfig({ ...config, sidebarLeft: !sidebarLeft })}
+        toggleSidebarDirection={() =>
+          setConfig({ ...config, sidebarLeft: !sidebarLeft })
+        }
         sidebarLeft={sidebarLeft}
         active={sidebar}
       />

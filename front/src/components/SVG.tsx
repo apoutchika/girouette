@@ -1,4 +1,4 @@
-import SVGS from '../assets/svgs/svgs.json';
+import SVGS from "../assets/svgs/svgs.json";
 
 type Svg = {
   [index: string]: string;
@@ -21,9 +21,7 @@ type Style = {
   display?: string;
 };
 
-function SVG({
-  fill, width, height, display, icon, extraClass,
-}: Props) {
+function SVG({ fill, width, height, display, icon, extraClass }: Props) {
   const style: Style = {};
 
   if (fill) {
@@ -46,7 +44,7 @@ function SVG({
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 1000 1000"
-      className={`icon icon--${icon} ${extraClass || ''}`}
+      className={`icon icon--${icon} ${extraClass || ""}`}
       style={style}
       dangerouslySetInnerHTML={{ __html: typedSvgs[icon] }}
     />
