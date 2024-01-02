@@ -1,6 +1,6 @@
 {
   "name": "girouette",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Custom domain name and valid https for local development",
   "main": "girouette.sh",
   "repository": {
