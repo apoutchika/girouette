@@ -35,7 +35,7 @@ echo -e "\e[34m> Test if has docker\e[39m\n"
 
 docker volume create girouette_install
 function run_node () {
-  docker run --rm -ti --network="host" -v "girouette_install:/app" node:16 bash -c "${1}"
+  docker run --rm -ti --network="host" -v "girouette_install:/app" node:20 bash -c "${1}"
 }
 
 echo ""
@@ -52,8 +52,8 @@ echo -e "\e[34m> Clean old Girouette install...\e[39m"
 echo ""
 echo -e "\e[34m> Test port configuration\e[39m\n"
 
-PACKAGE='{"type": "module", "dependencies": {"chalk": "^5.0.0", "inquirer": "^8.2.0", "is-port-reachable": "^4.0.0"}}'
-run_node "cd /app && echo '${PACKAGE}' > package.json && cat package.json && npm i"
+PACKAGE='{"type": "module", "dependencies": {"chalk": "5.3.0", "inquirer": "9.2.12", "is-port-reachable": "4.0.0"}}'
+run_node "cd /app && echo '${PACKAGE}' > package.json && npm i -s"
 
 
 TEST_CONFIG=$(cat <<EOF
@@ -73,7 +73,7 @@ test(443);
 test(53);
 EOF
 )
-run_node "cd /app && cat package.json && node --input-type=module -e \"${TEST_CONFIG}\""
+run_node "cd /app && node --input-type=module -e \"${TEST_CONFIG}\""
 
 FAIL=$(run_node "cat /app/fail")
 if [[ ${FAIL} == 'FAIL' ]];
