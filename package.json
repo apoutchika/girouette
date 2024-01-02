@@ -1,0 +1,16 @@
+{
+  "name": "girouette",
+  "version": "2.2.0",
+  "description": "Custom domain name and valid https for local development",
+  "main": "girouette.sh",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/apoutchika/girouette.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/apoutchika/girouette/issues"
+  },
+  "homepage": "https://github.com/apoutchika/girouette#readme"
+}
