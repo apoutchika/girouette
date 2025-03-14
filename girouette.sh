@@ -118,22 +118,6 @@ TLDS=$(run_node "cat /app/tlds")
 TLD=$(run_node "cat /app/tld")
 DNS=$(run_node "cat /app/dns")
 
-echo ""
-echo "DNSMASQ"
-echo "$DNSMASQ"
-
-echo ""
-echo "TLDS"
-echo "$TLDS"
-
-echo ""
-echo "TLD"
-echo "$TLD"
-
-echo ""
-echo "DNS"
-echo "$DNS"
-
 docker volume rm girouette_install
 
 docker run \
