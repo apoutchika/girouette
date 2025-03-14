@@ -119,33 +119,48 @@ EOF
 )
 run_node "cd /app && node --input-type=module -e \"${CONFIGURE}\""
 
-
 DNSMASQ=$(run_node "cat /app/dnsmasq")
 TLDS=$(run_node "cat /app/tlds")
 TLD=$(run_node "cat /app/tld")
 DNS=$(run_node "cat /app/dns")
+
+echo ""
+echo "DNSMASQ"
+echo "$DNSMASQ"
+
+echo ""
+echo "TLDS"
+echo "$TLDS"
+
+echo ""
+echo "TLD"
+echo "$TLD"
+
+echo ""
+echo "DNS"
+echo "$DNS"
 
 docker volume rm girouette_install
 
 docker run \
   --restart="always" \
   --name girouette \
-  --dns=${DNS} \
+  --dns="${DNS}" \
   -d \
   -p 80:80 \
   -p 443:443 \
   -p 127.0.0.1:53:5353 \
   -p 127.0.0.1:53:5353/udp \
   --network girouette \
-  -e DNS=${DNS} \
-  -e TLD=${TLD} \
-  -e TLDS=${TLDS} \
-  -e DNSMASQ=${DNSMASQ} \
+  -e DNS="${DNS}" \
+  -e TLD="${TLD}" \
+  -e TLDS="${TLDS}" \
+  -e DNSMASQ="${DNSMASQ}" \
   -v "girouette:/data" \
   -v "/var/run/docker.sock:/var/run/docker.sock" \
   --label girouette.domains="girouette.${TLD}:8080" \
   --label girouette.group="Girouette" \
-  girouette/girouette
+  girouette/girouette:latest
 
 echo "####################################################################"
 echo "##                                                                ##"
