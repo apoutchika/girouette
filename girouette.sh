@@ -15,39 +15,36 @@ curl -X GET https://raw.githubusercontent.com/apoutchika/girouette/master/licens
 echo ''
 echo ''
 
-
 ACCEPT='null'
 
-while [[ ${ACCEPT} != 'Y' && ${ACCEPT} != 'n' ]]
-do
+while [[ ${ACCEPT} != 'Y' && ${ACCEPT} != 'n' ]]; do
   echo -e "\e[1m"
-  read -p "? Accept the license ? [Y/n] : " ACCEPT
+  read -r -p "? Accept the license ? [Y/n] : " ACCEPT
   echo -e "\e[0m"
   [[ ${ACCEPT} != 'Y' && ${ACCEPT} != 'n' ]] && echo -e "\e[31mPlease set Y or n...\e[0m"
 done
 
 [[ ${ACCEPT} != 'Y' ]] && echo ";-(" && exit
 
-
 echo ""
 echo -e "\e[34m> Test if has docker\e[39m\n"
-! docker -v &> /dev/null && echo -e "\n\e[31mDocker not found\e[39m" && exit
+! docker -v &>/dev/null && echo -e "\n\e[31mDocker not found\e[39m" && exit
 
 docker volume create girouette_install
-function run_node () {
+function run_node() {
   docker run --rm -ti --network="host" -v "girouette_install:/app" node:20 bash -c "${1}"
 }
 
 echo ""
 echo -e "\e[34m> Clean old Girouette install...\e[39m"
 
-[[ $(docker network ls --format "{{.Name}}" | grep '^girouette$' | wc -l) == "0" ]] && docker network create girouette
-[[ $(docker volume ls --format "{{.Name}}" | grep '^girouette$' | wc -l) == "0" ]] && docker volume create girouette
+[[ $(docker network ls --format "{{.Name}}" | grep -c '^girouette$') == "0" ]] && docker network create girouette
+[[ $(docker volume ls --format "{{.Name}}" | grep -c '^girouette$') == "0" ]] && docker volume create girouette
 
-[[ $(docker ps --format "{{.Names}}" | grep '^girouette$' | wc -l) == "1" ]] && docker stop girouette
-[[ $(docker ps -a --format "{{.Names}}" | grep '^girouette$' | wc -l) == "1" ]] && docker rm girouette
+[[ $(docker ps --format "{{.Names}}" | grep -c '^girouette$') == "1" ]] && docker stop girouette
+[[ $(docker ps -a --format "{{.Names}}" | grep -c '^girouette$') == "1" ]] && docker rm girouette
 
-[[ $(docker images --format "{{.Repository}}" | grep "girouette/girouette" | wc -l ) == "1" ]] && docker rmi girouette/girouette
+[[ $(docker images --format "{{.Repository}}" | grep -c "girouette/girouette") == "1" ]] && docker rmi girouette/girouette
 
 echo ""
 echo -e "\e[34m> Test port configuration\e[39m\n"
@@ -55,8 +52,8 @@ echo -e "\e[34m> Test port configuration\e[39m\n"
 PACKAGE='{"type": "module", "dependencies": {"chalk": "5.3.0", "inquirer": "9.2.12", "is-port-reachable": "4.0.0"}}'
 run_node "cd /app && echo '${PACKAGE}' > package.json && npm config set update-notifier false && npm i -s"
 
-
-TEST_CONFIG=$(cat <<EOF
+TEST_CONFIG=$(
+  cat <<EOF
 import isPortReachable from 'is-port-reachable';
 import fs from 'fs';
 import chalk from 'chalk';
@@ -76,19 +73,16 @@ EOF
 run_node "cd /app && node --input-type=module -e \"${TEST_CONFIG}\""
 
 FAIL=$(run_node "cat /app/fail")
-if [[ ${FAIL} == 'FAIL' ]];
-then
+if [[ ${FAIL} == 'FAIL' ]]; then
   docker volume rm girouette_install
   exit
 fi
 
-
 echo -e "\e[34m> Prepare new install...\e[39m"
 echo ""
 
-
-
-CONFIGURE=$(cat <<EOF
+CONFIGURE=$(
+  cat <<EOF
 import fs from 'fs';
 import inquirer from 'inquirer';
 
